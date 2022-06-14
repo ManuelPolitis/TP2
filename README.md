@@ -1,7 +1,14 @@
 # TP2
  Repositorio del Trabajo Practico 2
- Participantes:
+ 
+## Participantes
+
  Manuel Politis Kufa
+
  Juan Cruz Diez
+
  Martin Bottelli
+ 
  Agustin Panozzo
+
+
