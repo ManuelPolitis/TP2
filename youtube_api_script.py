@@ -3,7 +3,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import pickle
-import json
+
 
 def apertura():
     """Precondiciones: Apertura hara el request de las tokens a la api, generando una autentificacion, pero antes verificara si ya existe una que no este expirada. En el caso que este expirada usara la refresh token. Con la token
@@ -44,7 +44,6 @@ def apertura():
             with open('token.pickle', 'wb') as f:
                 print('Guardando las credenciales para proximo uso...')
                 pickle.dump(credentials, f)
-    print(type(credentials))
 
     return credentials
 
@@ -76,3 +75,6 @@ def nombre_playlists()->None:
     print("Plataforma: Youtube")
     print(f"Usuario: {nombre_de_canal}")
     print(f"El nombre de las playlist es: {nombre_de_playlists}")
+
+
+nombre_playlists()
