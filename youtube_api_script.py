@@ -4,15 +4,19 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import pickle
 
+def cls() -> None:
+    """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-def apertura():
+
+def autenticar():
     """Precondiciones: Apertura hara el request de las tokens a la api, generando una autentificacion, pero antes verificara si ya existe una que no este expirada. En el caso que este expirada usara la refresh token. Con la token
     obtendremos los permisos para acceder a los datos que necesitamos del usuario a traves de la api.
     Postcondiciones: La funcion apertura retornara las credenciales que nos entrego la api para poder empezara utilizar sus funciones"""
 
     credentials = None
 
-    # token.pickle guarda las credenciales de logins anterioires
+    # token.pickle guarda las credenciales de logins anteriores
 
     if os.path.exists('token.pickle'):
         print('Cargando credenciales desde el archivo...')
@@ -48,15 +52,12 @@ def apertura():
     return credentials
 
 
-###################################
-
-
 def nombre_playlists()->None:
     """Precondiciones: Nombre playlist hara un request a la api sobre los datos de las playlist de los usuarios. Luego mediante bucles o recorrido del diccionario que llega de la response
     obtendremos los datos del nombre del canal y las playlists"""
 
 
-    credentials = apertura()
+    credentials = autenticar() #Me fijo si tengo credenciales sin vencer y sino creo nuevas.
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
@@ -78,8 +79,10 @@ def nombre_playlists()->None:
 
 
 def crear_playlists():
+    """Precondiciones: Crea una nueva playlist en la cuenta del usuario preguntandole por el titulo, descripcion de la playlist
+    y si quiere que la misma sea privada o publica."""
 
-    credentials = apertura()
+    credentials = autenticar() #Me fijo si tengo credenciales sin vencer y sino creo nuevas.
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
@@ -93,7 +96,7 @@ def crear_playlists():
         print('Valor ingresado no valido!. Pruebe otra vez.')
         public_o_private: str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
 
-    playlists_insert_response = youtube.playlists().insert(
+    playlists_insert_response = youtube.playlists().insert( #Inserto la playlist con los datos dados por el usuario
         part="snippet,status",
         body=dict(
             snippet=dict(
@@ -106,12 +109,11 @@ def crear_playlists():
         )
     ).execute()
 
+    cls()
+
     print('Playlist creada con exito!')
     print(f'Nombre de la playlist: {nombre_playlist}\n'
           f'Descripcion de la playlist: {descripcion_playlist}\n'
-          f'Playlist {public_o_private}\n'
+          f'{public_o_private} playlist\n'
           f'Link nueva playlist: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
 
-
-
-crear_playlists()
