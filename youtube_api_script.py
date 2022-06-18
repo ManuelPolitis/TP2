@@ -77,4 +77,41 @@ def nombre_playlists()->None:
     print(f"El nombre de las playlist es: {nombre_de_playlists}")
 
 
-nombre_playlists()
+def crear_playlists():
+
+    credentials = apertura()
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    nombre_playlist:str = input('Inserte el nombre de la nueva playlist que desea crear: ')
+
+    descripcion_playlist:str = input('Inserte la descripcion de la playlist: ')
+
+    public_o_private:str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+
+    while public_o_private != 'private' and public_o_private != 'public':
+        print('Valor ingresado no valido!. Pruebe otra vez.')
+        public_o_private: str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+
+    playlists_insert_response = youtube.playlists().insert(
+        part="snippet,status",
+        body=dict(
+            snippet=dict(
+                title=nombre_playlist,
+                description=descripcion_playlist
+            ),
+            status=dict(
+                privacyStatus=public_o_private
+            )
+        )
+    ).execute()
+
+    print('Playlist creada con exito!')
+    print(f'Nombre de la playlist: {nombre_playlist}\n'
+          f'Descripcion de la playlist: {descripcion_playlist}\n'
+          f'Playlist {public_o_private}\n'
+          f'Link nueva playlist: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
+
+
+
+crear_playlists()
