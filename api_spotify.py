@@ -2,7 +2,7 @@ import tekore as tk
 
 def pedir_token():
     """
-    La funcion hará el request del token a la api a traves de Tekore.
+    La funcion hará un request a la api a traves de Tekore para obtener las credenciales.
     Postcondicion: Retornará el token obtenido a partir de los datos del usuario.
     """
     client_id: str = '6d3faa7cfb01460bacc1605a2f508e0d'
