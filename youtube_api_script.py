@@ -61,7 +61,7 @@ def nombre_playlists()->None:
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
-    request = youtube.playlists().list(part="snippet",mine=True) #Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    request = youtube.playlists().list(part="snippet",mine=True, maxResults=50) #Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
     response = request.execute()
 
     cant_de_playlists:int = len(response["items"]) # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
@@ -75,7 +75,7 @@ def nombre_playlists()->None:
 
     print("Plataforma: Youtube")
     print(f"Usuario: {nombre_de_canal}")
-    print(f"El nombre de las playlist es: {nombre_de_playlists}")
+    print(f"Nombres de las playlist es: {nombre_de_playlists}")
 
 
 def crear_playlists():
@@ -117,3 +117,64 @@ def crear_playlists():
           f'{public_o_private} playlist\n'
           f'Link nueva playlist: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
 
+
+def playlist_csv():
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    request = youtube.playlists().list(part="snippet",mine=True,maxResults=50)  # Genero el request que con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    response = request.execute()
+
+    cant_de_playlists:int = int(len(response["items"])) # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+
+    playlistsIds:list = []
+
+    nombre_de_playlists:list=[]
+
+    for i in range (0,cant_de_playlists): #Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+        nombre_de_playlists.append((response["items"][i]["snippet"]["title"]))
+
+    for i in range (0,cant_de_playlists): #Recorro todas las playlists obtenidas como diccionarios para sacar solamente los id de las mismas
+        playlistsIds.append((response["items"][i]["id"]))
+
+    diccionario_playlists:dict = {}
+
+    for i in range(0,cant_de_playlists):
+        diccionario_playlists[i]=nombre_de_playlists[i]
+
+    print(diccionario_playlists)
+
+    is_Int:bool = False
+    in_Range:bool = False
+
+    while not is_Int or not in_Range:
+        try:
+            numero_de_playlist: int = input('Ingrese el numero de playlist que desea obtener: ')
+            numero_de_playlist:int = int(numero_de_playlist)
+            is_Int = True
+
+        except ValueError:
+            print('Valor no numerico!')
+            is_Int = False
+
+        if is_Int:
+            if numero_de_playlist > cant_de_playlists or numero_de_playlist < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_Range = True
+
+    cls()
+    print(diccionario_playlists)
+    print(f'Eligio la playlist: {diccionario_playlists[numero_de_playlist]}')
+    idPlaylistElegida:str = playlistsIds[numero_de_playlist]
+    print(f'Link de la Playlist: https://www.youtube.com/playlist?list={idPlaylistElegida}')
+
+    request = youtube.playlistItems().list(part="snippet", maxResults=50,playlistId=idPlaylistElegida)
+    response = request.execute()
+
+    for i in range(0,len(response['items'])):
+        print (response['items'][i]['snippet'])
+
+playlist_csv()
