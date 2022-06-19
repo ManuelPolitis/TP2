@@ -1,3 +1,4 @@
+import csv
 import os
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -174,7 +175,34 @@ def playlist_csv():
     request = youtube.playlistItems().list(part="snippet", maxResults=50,playlistId=idPlaylistElegida)
     response = request.execute()
 
-    for i in range(0,len(response['items'])):
-        print (response['items'][i]['snippet'])
+
+    with open(f'playlist {diccionario_playlists[numero_de_playlist]}.csv','w',newline='',encoding='UTF-8') as archivo_csv:
+        csv_writer = csv.writer(archivo_csv,delimiter =',',quotechar='"',quoting=csv.QUOTE_NONNUMERIC)
+        csv_writer.writerow((
+            'Fecha de publicacion',
+            'ID del canal autenticado',
+            'Titulo',
+            'Descripcion del video',
+            'ID de la playlist',
+            'ID del video',
+            'Nombre del canal',
+            'ID del canal'))
+
+        for i in range(0, len(response['items'])):
+            try:
+                csv_writer.writerow(
+                    (response["items"][i]["snippet"]["publishedAt"],
+                     response["items"][i]["snippet"]["channelId"],
+                     response["items"][i]["snippet"]["title"],
+                     response["items"][i]["snippet"]["description"],
+                     response["items"][i]["snippet"]["playlistId"],
+                     response["items"][i]["snippet"]["resourceId"]["videoId"],
+                     response["items"][i]["snippet"]["videoOwnerChannelTitle"],
+                     response["items"][i]["snippet"]["videoOwnerChannelId"]))
+
+            except KeyError:
+                print('')
+
+
 
 playlist_csv()
