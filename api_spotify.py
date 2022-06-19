@@ -15,5 +15,12 @@ def pedir_token():
     #tk.config_to_file(file, conf + (token.refresh_token,))
     return token
 
+def mostrar_playlist(token):
+    spotify = tk.Spotify(token)
+    playlist = spotify.followed_playlists(limit=10).items
+    #track = spotify.playlist_items(playlist.id, limit=1).items[0].track
+    for track in playlist:
+        print(track.name)
+
 
 
