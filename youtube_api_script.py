@@ -188,6 +188,8 @@ def playlist_csv():
             'Nombre del canal',
             'ID del canal'))
 
+        print('')
+        print('Creando archivo CSV...')
         for i in range(0, len(response['items'])):
             try:
                 csv_writer.writerow(
@@ -203,6 +205,57 @@ def playlist_csv():
             except KeyError:
                 print('')
 
+        print(f'Archivo creado exitosamente! Nombre del archivo: playlist {diccionario_playlists[numero_de_playlist]}.csv')
+
+def agregar_cancion():
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    indice_a_agregar: int = 0
+
+    while indice_a_agregar == 0:
+
+        cls()
+        cancion_a_buscar: str = input('Ingrese el nombre de la cancion, artista, album o cualquier termino que ayude a buscar la cancion que desea agregar a la playlist: ')
+
+        request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
+        response = request.execute()
+
+        for i in range(0, len(response['items'])):
+            print('----------------------------------------------------------------------------------------------------------')
+            print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
+            print(response['items'][i]['snippet']['description'])
 
 
-playlist_csv()
+        is_Int: bool = False
+        in_Range: bool = False
+
+        while not is_Int or not in_Range:
+            try:
+                indice_a_agregar: int = int(input('Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
+                is_Int = True
+
+            except ValueError:
+                print('Valor no numerico!')
+                is_Int = False
+
+            if is_Int:
+
+                if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
+                    print('El valor ingresado no esta dentro del rango posible.')
+                else:
+                    in_Range = True
+
+
+
+
+
+
+
+
+
+
+
+agregar_cancion()
