@@ -220,16 +220,22 @@ def agregar_cancion():
         cls()
         cancion_a_buscar: str = input('Ingrese el nombre de la cancion, artista, album o cualquier termino que ayude a buscar la cancion que desea agregar a la playlist: ')
 
+        cls()
+
         request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
         response = request.execute()
 
         diccionario_resultados:dict = {}
+
+        print("Resultados:")
 
         for i in range(0, len(response['items'])):
             print('----------------------------------------------------------------------------------------------------------')
             print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
             print(response['items'][i]['snippet']['description'])
             diccionario_resultados[i+1] = response["items"][i]["id"]["videoId"]
+
+        print('----------------------------------------------------------------------------------------------------------\n')
 
         is_Int: bool = False
         in_Range: bool = False
@@ -250,61 +256,66 @@ def agregar_cancion():
                 else:
                     in_Range = True
 
-        confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+    print("")
+    confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-        while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "s":
-            confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+    while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "s":
+        confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-        if confirmacion_agregar.lower() == "s":
-            request = youtube.playlists().list(part="snippet", mine=True,maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
-            response = request.execute()
+    if confirmacion_agregar.lower() == "s":
+        request = youtube.playlists().list(part="snippet", mine=True,maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+        response = request.execute()
 
-            cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+        cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
 
-            nombre_de_playlists: dict = {}
-            id_de_playlists:dict = {}
+        nombre_de_playlists: dict = {}
+        id_de_playlists:dict = {}
 
-            for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
-                nombre_de_playlists[i+1]=response["items"][i]["snippet"]["title"]
-                id_de_playlists[i+1] = response["items"][i]["id"]
+        for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+            nombre_de_playlists[i+1]=response["items"][i]["snippet"]["title"]
+            id_de_playlists[i+1] = response["items"][i]["id"]
 
-            cls()
-            print(nombre_de_playlists,"\n")
+        cls()
 
-            is_Int: bool = False
-            in_Range: bool = False
+        print("Tus Playlists:\n")
+        for indice,nombre in nombre_de_playlists.items():
+            print(f"{indice}) {nombre}")
 
-            while not is_Int or not in_Range:
-                try:
-                    playlist_a_modificar: int = input("Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ") # Puedo crear funcion validar
-                    playlist_a_modificar: int = int(playlist_a_modificar)
-                    is_Int = True
+        print("")
+        is_Int: bool = False
+        in_Range: bool = False
 
-                except ValueError:
-                    print('Valor no numerico!')
-                    is_Int = False
+        while not is_Int or not in_Range:
+            try:
+                playlist_a_modificar: int = input("Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ") # Puedo crear funcion validar
+                playlist_a_modificar: int = int(playlist_a_modificar)
+                is_Int = True
 
-                if is_Int:
-                    if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
-                        print('El valor ingresado no esta dentro del rango posible.')
-                    else:
-                        in_Range = True
+            except ValueError:
+                print('Valor no numerico!')
+                is_Int = False
 
-            video_ID:str = diccionario_resultados[indice_a_agregar]
-            playlist_ID:str = id_de_playlists[playlist_a_modificar]
+            if is_Int:
+                if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
+                    print('El valor ingresado no esta dentro del rango posible.')
+                else:
+                    in_Range = True
 
-            request = youtube.playlistItems().insert(
-                part="snippet",
-                body={
-                    "snippet": {
-                        "playlistId": playlist_ID,
-                        "resourceId": {
-                            "kind": "youtube#video",
-                            "videoId": video_ID
-                        }
+        video_ID:str = diccionario_resultados[indice_a_agregar]
+        playlist_ID:str = id_de_playlists[playlist_a_modificar]
+
+        request = youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_ID,
+                    "resourceId": {
+                        "kind": "youtube#video",
+                        "videoId": video_ID
                     }
                 }
-            )
-            response = request.execute()
-
-agregar_cancion()
+            }
+        )
+        cls()
+        print("Video agregado con exito!")
+        response = request.execute()
