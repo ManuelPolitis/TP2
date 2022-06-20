@@ -167,7 +167,6 @@ def playlist_csv():
                 in_Range = True
 
     cls()
-    print(diccionario_playlists)
     print(f'Eligio la playlist: {diccionario_playlists[numero_de_playlist]}')
     idPlaylistElegida:str = playlistsIds[numero_de_playlist]
     print(f'Link de la Playlist: https://www.youtube.com/playlist?list={idPlaylistElegida}')
@@ -186,7 +185,9 @@ def playlist_csv():
             'ID de la playlist',
             'ID del video',
             'Nombre del canal',
-            'ID del canal'))
+            'ID del canal',
+            "Tipo de elemento",
+            "E-tag"))
 
         print('')
         print('Creando archivo CSV...')
@@ -200,12 +201,16 @@ def playlist_csv():
                      response["items"][i]["snippet"]["playlistId"],
                      response["items"][i]["snippet"]["resourceId"]["videoId"],
                      response["items"][i]["snippet"]["videoOwnerChannelTitle"],
-                     response["items"][i]["snippet"]["videoOwnerChannelId"]))
+                     response["items"][i]["snippet"]["videoOwnerChannelId"],
+                     response["items"][i]["kind"],
+                     response["items"][i]["etag"]))
 
             except KeyError:
                 print('')
 
         print(f'Archivo creado exitosamente! Nombre del archivo: playlist {diccionario_playlists[numero_de_playlist]}.csv')
+
+
 
 def agregar_cancion():
 
@@ -319,3 +324,7 @@ def agregar_cancion():
         cls()
         print("Video agregado con exito!")
         response = request.execute()
+
+    #Aca iria el llamado al módulo de lyrics para la letra
+
+playlist_csv()
