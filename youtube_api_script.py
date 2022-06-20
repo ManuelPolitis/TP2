@@ -25,7 +25,7 @@ def autenticar():
             credentials = pickle.load(token)
 
 
-    # Si no hay credenciales validas disponibles, entonces o refresco el token o vuelvo a loginear.
+    # Si no hay credenciales válidas disponibles, entonces o refresco el token o vuelvo a loginear.
     if not credentials or not credentials.valid:
         if credentials and credentials.expired and credentials.refresh_token:
             print('Refrescando token de acceso...')
@@ -250,8 +250,6 @@ def agregar_cancion():
                 else:
                     in_Range = True
 
-
-        print(diccionario_resultados)
         confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
         while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "s":
@@ -263,14 +261,15 @@ def agregar_cancion():
 
             cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
 
-            nombre_de_playlists: list = {}
+            nombre_de_playlists: dict = {}
+            id_de_playlists:dict = {}
 
             for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
                 nombre_de_playlists[i+1]=response["items"][i]["snippet"]["title"]
+                id_de_playlists[i+1] = response["items"][i]["id"]
 
             cls()
             print(nombre_de_playlists,"\n")
-            playlist_a_modificar:str = input("Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ")
 
             is_Int: bool = False
             in_Range: bool = False
@@ -290,8 +289,22 @@ def agregar_cancion():
                         print('El valor ingresado no esta dentro del rango posible.')
                     else:
                         in_Range = True
-            
-            #Falta ahora sabiendo en que playlist quiere agregar la cancion, buscar en la documentacion como agregar un video a una playlist
 
+            video_ID:str = diccionario_resultados[indice_a_agregar]
+            playlist_ID:str = id_de_playlists[playlist_a_modificar]
+
+            request = youtube.playlistItems().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_ID,
+                        "resourceId": {
+                            "kind": "youtube#video",
+                            "videoId": video_ID
+                        }
+                    }
+                }
+            )
+            response = request.execute()
 
 agregar_cancion()
