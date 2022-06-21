@@ -1,0 +1,38 @@
+Descripcion de todas las funciones del módulo de Youtube para usar en el programa principal:
+(Ninguna de estas funciones requiere que se le pase ningun parametro)
+
+autenticar()
+
+Apertura hara el request de las tokens a la api, generando una autentificacion, pero antes verificará si ya existe una que no esté expirada.
+En el caso que esté expirada usara la refresh token. Con la token obtendremos los permisos para acceder a los datos que necesitamos del usuario a traves de la api.
+
+Postcondiciones: La funcion apertura retornará las credenciales que nos entregó la api para poder empezar a utilizar sus funciones
+
+(No es necesario llamar a esta funcion dentro del programa principal, ya que este se llama al comienzo de todas las demas
+funciones de este módulo)
+
+
+nombre_playlists()
+
+Nombre playlist hara un request a la api sobre los datos de la playlist del usuario.
+Luego mediante bucles y recorrido del diccionario que llega de la response obtendremos los datos del nombre del canal y las playlists.
+La plataforma, el nombre de usuario y sus playlists seran impresas con un print para el usuario.
+
+
+crear_playlists()
+
+Crea una nueva playlist en la cuenta del usuario preguntandole por el nombre, descripcion de la playlist y si quiere que la misma sea privada o pública.
+
+
+playlist_csv()
+
+Imprime todas las playlists del usuario y le pide que elija una para luego crear un archivo .csv con los datos de la playlist elegida.
+
+
+agregar_cancion()
+
+Pide al usuario el nombre y artista de la cancion que quiere agregar a su playlist.
+Luego hace una busqueda con esas palabras clave y presenta los primeros 3 resultados que se presentan.
+Después de elegir la cancion deseada consulta al usuario si quere agregar esa cancion a una playlist suya o no.
+En el caso que sí, pregunta en cuál desea agregarla.
+Indefinidamente si agrega a su playlist o no, se imprime la letra de la cancion al final de la ejecucion.
