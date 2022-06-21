@@ -87,6 +87,8 @@ def crear_playlists():
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
+    cls()
+
     nombre_playlist:str = input('Inserte el nombre de la nueva playlist que desea crear: ')
 
     descripcion_playlist:str = input('Inserte la descripcion de la playlist: ')
@@ -120,13 +122,15 @@ def crear_playlists():
 
 
 def playlist_csv():
-
+    """Imprime todas las playlists del usuario y le pide que elija una para luego crear un archivo .csv con los datos de la playlist elegida."""
     credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
     request = youtube.playlists().list(part="snippet",mine=True,maxResults=50)  # Genero el request que con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
     response = request.execute()
+
+    cls()
 
     cant_de_playlists:int = int(len(response["items"])) # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
 
@@ -145,14 +149,16 @@ def playlist_csv():
     for i in range(0,cant_de_playlists):
         diccionario_playlists[i]=nombre_de_playlists[i]
 
-    print(diccionario_playlists)
+    print("Tus Playlists:")
+    for indice,nombre in diccionario_playlists.items():
+        print(f"{indice+1}) {nombre}")
 
     is_Int:bool = False
     in_Range:bool = False
 
     while not is_Int or not in_Range:
         try:
-            numero_de_playlist: int = input('Ingrese el numero de playlist que desea obtener: ')
+            numero_de_playlist: int = input('Ingrese el indice de playlist de la que desea obtener un archivo csv: ')
             numero_de_playlist:int = int(numero_de_playlist)
             is_Int = True
 
@@ -167,6 +173,9 @@ def playlist_csv():
                 in_Range = True
 
     cls()
+
+    numero_de_playlist-=1
+
     print(f'Eligio la playlist: {diccionario_playlists[numero_de_playlist]}')
     idPlaylistElegida:str = playlistsIds[numero_de_playlist]
     print(f'Link de la Playlist: https://www.youtube.com/playlist?list={idPlaylistElegida}')
@@ -213,6 +222,11 @@ def playlist_csv():
 
 
 def agregar_cancion():
+    """Pide al usuario el nombre y artista de la cancion que quiere agregar a su playlist.
+    Luego hace una busqueda con esas palabras clave y presenta los primeros 3 resultados que se presentan.
+    Después de elegir la cancion deseada consulta al usuario si quere agregar esa cancion a una playlist suya o no.
+    En el caso que sí, pregunta en cuál desea agregarla.
+    Indefinidamente si agrega a su playlist o no, se imprime la letra de la cancion al final de la ejecucion."""
 
     credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
 
@@ -223,8 +237,10 @@ def agregar_cancion():
     while indice_a_agregar == 0:
 
         cls()
-        cancion_a_buscar: str = input('Ingrese el nombre de la cancion, artista, album o cualquier termino que ayude a buscar la cancion que desea agregar a la playlist: ')
+        nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+        artista_cancion_a_buscar: str = input("Ingrese el artista de la cancion: ")
 
+        cancion_a_buscar:str = nombre_cancion_a_buscar + " " + artista_cancion_a_buscar
         cls()
 
         request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
@@ -327,4 +343,3 @@ def agregar_cancion():
 
     #Aca iria el llamado al módulo de lyrics para la letra
 
-playlist_csv()
