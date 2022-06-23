@@ -345,6 +345,3 @@ def agregar_cancion():
     cls()
 
     modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar)
-
-agregar_cancion()
-
