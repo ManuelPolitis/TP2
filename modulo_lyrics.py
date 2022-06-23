@@ -44,5 +44,3 @@ def letra_cancion(titulo,artista):
         except AttributeError:
             print("")
 
-
-letra_cancion("efecto","bad bunny")
