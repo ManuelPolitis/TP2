@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9eb2c1f7-8a30-44fa-94f2-5fb1fef8f15c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/programa_principal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modulo_youtube.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulo_youtube.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +41,7 @@
       <recent name="C:\Users\manue\OneDrive\Escritorio\TP2" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.youtube_api_script">
+  <component name="RunManager" selected="Python.modulo_youtube">
     <configuration name="lyrics_api_script" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TP2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -56,6 +56,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lyrics_api_script.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="modulo_youtube" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TP2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modulo_youtube.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -88,6 +110,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.modulo_youtube" />
         <item itemvalue="Python.youtube_api_script" />
         <item itemvalue="Python.lyrics_api_script" />
       </list>
@@ -105,6 +128,7 @@
       <workItem from="1655755630175" duration="1156000" />
       <workItem from="1655769773332" duration="3032000" />
       <workItem from="1655773138847" duration="72000" />
+      <workItem from="1655950024939" duration="476000" />
     </task>
     <servers />
   </component>
@@ -124,7 +148,8 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/youtube_api_script_py$lyrics_api_script.coverage" NAME="lyrics_api_script Coverage Results" MODIFIED="1655755792174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/youtube_api_script_py$modulo_youtube.coverage" NAME="modulo_youtube Coverage Results" MODIFIED="1655950450259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TP2$lyrics_api_script.coverage" NAME="lyrics_api_script Coverage Results" MODIFIED="1655755472758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/youtube_api_script_py$youtube_api_script.coverage" NAME="youtube_api_script Coverage Results" MODIFIED="1655771260006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/youtube_api_script_py$youtube_api_script.coverage" NAME="youtube_api_script Coverage Results" MODIFIED="1655950160063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

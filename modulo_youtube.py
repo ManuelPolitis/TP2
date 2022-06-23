@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import pickle
+import modulo_lyrics
 
 def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
@@ -280,7 +281,7 @@ def agregar_cancion():
     print("")
     confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-    while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "s":
+    while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "n":
         confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
     if confirmacion_agregar.lower() == "s":
@@ -341,5 +342,9 @@ def agregar_cancion():
         print("Video agregado con exito!")
         response = request.execute()
 
-    #Aca iria el llamado al módulo de lyrics para la letra
+    cls()
+
+    modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar)
+
+agregar_cancion()
 
