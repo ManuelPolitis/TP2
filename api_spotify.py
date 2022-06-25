@@ -10,7 +10,7 @@ def pedir_token():
     redirect_uri: str = 'https://example.com/callback'
     conf: tuple = (client_id, client_secret, redirect_uri)
 
-    token = tk.prompt_for_user_token(*conf, scope=tk.scope.every)
+    token = tk.prompt_for_user_token(*conf, tk.scope.every)
     return token
 
 def mostrar_playlist(spotify) -> None:
@@ -43,7 +43,7 @@ def crear_playlist(spotify) -> None:
 
     if entrada == 'Y':
         publico: bool = True
-    elif entrada == 'N':
+    else:
         publico: bool = False
 
     descripcion: str = input('Escriba una descripción: ')
