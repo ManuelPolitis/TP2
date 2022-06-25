@@ -30,6 +30,9 @@ def letra_cancion(titulo,artista):
         print("Valor invalido introducido. Prueba otra vez")
         confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
 
+    if confirmacion.lower() == 's':
+        return cancion.lyrics
+
     if confirmacion.lower() == "n":
         cls()
         print("Para ser mas preciso en la busqueda de la letra, especifique el titulo y nombre del artista correctamente")
