@@ -354,18 +354,15 @@ def funcion_letras()->list:
 
     youtube = build('youtube', 'v3', credentials=credentials)
 
-    request = youtube.playlists().list(part="snippet", mine=True,
-                                       maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    request = youtube.playlists().list(part="snippet", mine=True,maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
     response = request.execute()
 
-    cant_de_playlists: int = len(response[
-                                     "items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+    cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
 
     nombre_de_playlists: dict = {}
     id_de_playlists: dict = {}
 
-    for i in range(0,
-                   cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+    for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
         nombre_de_playlists[i + 1] = response["items"][i]["snippet"]["title"]
         id_de_playlists[i + 1] = response["items"][i]["id"]
 
@@ -381,8 +378,7 @@ def funcion_letras()->list:
 
     while not is_Int or not in_Range:
         try:
-            playlist_a_modificar: int = input(
-                "Elija de la lista de playlists, cual quiere analizar sus letras (1/2/3/4/...): ")  # Puedo crear funcion validar
+            playlist_a_modificar: int = input("Elija de la lista de playlists, cual quiere analizar sus letras (1/2/3/4/...): ")  # Puedo crear funcion validar
             playlist_a_modificar: int = int(playlist_a_modificar)
             is_Int = True
 
