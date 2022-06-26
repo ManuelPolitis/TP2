@@ -1,14 +1,15 @@
 import tekore as tk
 
+CLIENT_ID: str = '6d3faa7cfb01460bacc1605a2f508e0d'
+CLIENT_SECRET: str = '1e159178e8ca443498e3ec58f25fd792'
+REDIRECT_URI: str = 'https://example.com/callback'
+
 def pedir_token():
     """
     La funcion hará un request a la api a traves de Tekore para obtener las credenciales.
     Postcondicion: Retornará el token obtenido a partir de los datos del usuario.
     """
-    client_id: str = '6d3faa7cfb01460bacc1605a2f508e0d'
-    client_secret: str = '1e159178e8ca443498e3ec58f25fd792'
-    redirect_uri: str = 'https://example.com/callback'
-    conf: tuple = (client_id, client_secret, redirect_uri)
+    conf: tuple = (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
     token = tk.prompt_for_user_token(*conf, tk.scope.every)
     return token
@@ -34,18 +35,6 @@ def crear_playlist(spotify) -> None:
     """
     user_id: str = spotify.current_user().id
     nombre: str = input('Ingrese el nombre de la playlist: ')
-    entrada: str = input('¿Desea que la playlist sea publica? (Y/N): ')
-    
-    while entrada != 'Y' and entrada != 'N':
-        
-        print('Opción inválida.')
-        entrada: str = input('¿Desea que la playlist sea publica? (Y/N): ')
-
-    if entrada == 'Y':
-        publico: bool = True
-    else:
-        publico: bool = False
-
     descripcion: str = input('Escriba una descripción: ')
 
-    spotify.playlist_create(user_id, nombre, publico, descripcion)
+    spotify.playlist_create(user_id, nombre, True, descripcion)
