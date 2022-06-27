@@ -64,6 +64,12 @@ def exportar_csv(spotify) -> None:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_range = True
+    
+    id_playlist:str = lista_playlist[numero_de_playlist-1].id
+    nombre_playlist:str = lista_playlist[numero_de_playlist-1].name
+    print(f"Eligio la playlist : {nombre_playlist}, id: {id_playlist}")
+    link_playlist:str = (f"https://open.spotify.com/playlist/{id_playlist}")
+    
 
 def crear_playlist(spotify) -> None:
     """
