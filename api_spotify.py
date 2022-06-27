@@ -36,6 +36,16 @@ def mostrar_playlist(spotify) -> None:
         print(f'{contador + 1} - {track.name}')
         contador += 1
 
+def exportar_csv(spotify) -> None:
+    contador: int = int()
+    user_id: str = spotify.current_user().id
+    lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
+    print("\nLa lista es: ")
+    
+    for track in lista_playlist:
+        print(f"{contador + 1} - {track.name} - {track.id}")
+        contador +=1
+
 def crear_playlist(spotify) -> None:
     """
     Crea una playlist vacía a partir de los datos que ingresa el usuario.
