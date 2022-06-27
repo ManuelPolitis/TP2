@@ -69,7 +69,35 @@ def exportar_csv(spotify) -> None:
     nombre_playlist:str = lista_playlist[numero_de_playlist-1].name
     print(f"Eligio la playlist : {nombre_playlist}, id: {id_playlist}")
     link_playlist:str = (f"https://open.spotify.com/playlist/{id_playlist}")
+
+    cantidad_canciones = (spotify.playlist_items(id_playlist, fields=None, market=None, as_tracks=False, limit=100, offset=0)).total
     
+    artistas = (spotify.playlist_items(id_playlist, fields=None, market=None, as_tracks=False, limit=100, offset=0)).items
+    
+    lista_canciones = []
+    tiempo: int = 0
+    lista_artistas = []
+    for i in range(cantidad_canciones):
+        
+        try:
+            musico = artistas[i].track
+            nombre_musico = musico.artists[0]
+            if nombre_musico.name not in lista_artistas:
+                lista_artistas.append(nombre_musico.name)
+        except Exception:
+            None
+        
+        lista_canciones.append(musico.name)
+        tiempo += musico.duration_ms
+
+    
+    tiempo = tiempo/1000
+    nombres_artistas:set = set(lista_artistas)
+    
+    cantidad_artistas:int = len(nombres_artistas)
+    
+    nombres_canciones:set = set(lista_canciones)
+    cantidad_canciones:int = len(nombres_canciones)
 
 def crear_playlist(spotify) -> None:
     """
