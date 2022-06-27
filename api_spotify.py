@@ -11,7 +11,15 @@ def pedir_token():
     """
     conf: tuple = (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
-    token = tk.prompt_for_user_token(*conf, tk.scope.every)
+    valido:bool = False
+    
+    while not valido:
+        try:
+            token = tk.prompt_for_user_token(*conf, tk.scope.every)
+            valido = True
+        except KeyError:
+            print("\nCopio mal el URL, pruebe hacerlo de nuevo")
+            valido = False
     return token
 
 def mostrar_playlist(spotify) -> None:
