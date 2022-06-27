@@ -99,6 +99,51 @@ def exportar_csv(spotify) -> None:
     nombres_canciones:set = set(lista_canciones)
     cantidad_canciones:int = len(nombres_canciones)
 
+    with open(f'playlist_{nombre_playlist}.csv','w',newline='',encoding='UTF-8') as archivo_csv:
+        csv_writer = csv.writer(archivo_csv,delimiter =',',quotechar='"',quoting=csv.QUOTE_NONNUMERIC)
+        csv_writer.writerow((
+            "ID de playlist",
+            "Nombre de playlist",
+            "Cantidad de canciones",
+            "Nombres de canciones",
+            "Descripción de playlist",
+            "Cantidad de seguidores de la playlist",
+            "Playlist publica",
+            "Cantidad de artistas",
+            "nombres de artistas",
+            "Playlist colaborativa",
+            "ID del propietario",
+            "link de playlist",
+            "Duración de playlist en segundos"))
+        
+        print('')
+        print('Creando archivo CSV...')
+
+        
+        try:
+            csv_writer.writerow((
+                spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).id,
+                spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).name,
+                cantidad_canciones,
+                nombres_canciones,
+                spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).description,
+                (spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).followers).total,
+                spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).public,
+                cantidad_artistas,
+                nombres_artistas,
+                spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).collaborative,
+                (spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).owner).id,
+                link_playlist,
+                tiempo
+            ))
+
+
+
+        except KeyError:
+                print('')
+
+        print(f'Archivo creado exitosamente! Nombre del archivo: playlist_{nombre_playlist}.csv')
+
 def crear_playlist(spotify) -> None:
     """
     Crea una playlist vacía a partir de los datos que ingresa el usuario.
