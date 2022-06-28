@@ -24,11 +24,11 @@ def pedir_token():
 
 def mostrar_playlist(spotify) -> None:
     """
-    Muestra las primeras 20 playlists que tenga el usuario.
+    Muestra las primeras 50 playlists que tenga el usuario.
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
     """
     contador: int = int()
-    playlists = spotify.followed_playlists(limit=20).items
+    playlists = spotify.followed_playlists(limit=50).items
 
     print('\nListas de reproducción: ')
 
@@ -39,7 +39,7 @@ def mostrar_playlist(spotify) -> None:
 def exportar_csv(spotify) -> None:
     contador: int = int()
     user_id: str = spotify.current_user().id
-    lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
+    lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
     print("\nLa lista es: ")
     
     for track in lista_playlist:
