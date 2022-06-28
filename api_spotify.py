@@ -1,4 +1,5 @@
 import tekore as tk
+import csv
 
 CLIENT_ID: str = '6d3faa7cfb01460bacc1605a2f508e0d'
 CLIENT_SECRET: str = '1e159178e8ca443498e3ec58f25fd792'
@@ -10,16 +11,37 @@ def pedir_token():
     Postcondicion: Retornará el token obtenido a partir de los datos del usuario.
     """
     conf: tuple = (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+    valido: bool = False
 
-    valido:bool = False
-    
     while not valido:
+
         try:
             token = tk.prompt_for_user_token(*conf, tk.scope.every)
             valido = True
         except KeyError:
             print("\nCopio mal el URL, pruebe hacerlo de nuevo")
             valido = False
+
+    return token
+
+def autenticar(token=None):
+    """
+    Si recibe un token, verifica que sea válido y lo refresca.
+    De lo contrario, solicita uno nuevo.
+
+    Precondicion: Recibe un token (opcional).
+    Postcondicion: Devuelve un token válido
+    """
+    if token:
+        try:
+            print('Refrescando token...')
+            token = tk.refresh_user_token(CLIENT_ID, CLIENT_SECRET, token.refresh_token)
+        except:
+            token = pedir_token() #Si el token expiró, solicita uno nuevo
+
+    else:
+        token = pedir_token()
+
     return token
 
 def mostrar_playlist(spotify) -> None:
@@ -28,7 +50,7 @@ def mostrar_playlist(spotify) -> None:
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
     """
     contador: int = int()
-    playlists = spotify.followed_playlists(limit=20).items
+    playlists = spotify.followed_playlists(limit=50).items
 
     print('\nListas de reproducción: ')
 
@@ -39,7 +61,7 @@ def mostrar_playlist(spotify) -> None:
 def exportar_csv(spotify) -> None:
     contador: int = int()
     user_id: str = spotify.current_user().id
-    lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
+    lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
     print("\nLa lista es: ")
     
     for track in lista_playlist:
