@@ -46,7 +46,7 @@ def autenticar(token=None):
 
 def mostrar_playlist(spotify) -> None:
     """
-    Muestra las primeras 20 playlists que tenga el usuario.
+    Muestra las primeras 50 playlists que tenga el usuario.
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
     """
     contador: int = int()
