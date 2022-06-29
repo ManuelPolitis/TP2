@@ -5,11 +5,11 @@ client_id:str = "4GUOEO9swOqdnknWbco9EICRbuEp19-gCQ7AQXbf7OlLU6whZgyPiEZa7vCCLcY
 client_secret:str = "6eutEXXOtlXg8gaqtPq7iYY6kyyzT3YfJ28GvKyC_paCKKZDv7Iq61G_RM9E2NFk4LuwH_B9fjt7LKrQ86HSdQ"
 client_access_token:str = "aKwvnEEPesxBgGV6N4OohEFqTx0mwgKVRcsvgv8Mv0IZS9EhFwUTEae0G5jbtz3J"
 
-def cls() -> str:
+def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def letra_cancion(titulo,artista):
+def letra_cancion(titulo,artista) -> str:
     """Busca la cancion del artista que fueron pasados por parametro
     Precondciones: Se le debe pasar a la funcion por parametro el nombre de la cancion
     a buscar y el artista de la misma."""
