@@ -169,12 +169,19 @@ def crear_playlist(spotify) -> None:
 
 def buscar_nuevos_elementos(spotify) -> None:
     nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
-
-    buscar:tuple = spotify.search(query=nombre_cancion_a_buscar, limit=3)
-    lista_cancion:list = buscar[0].items
-    for i in range(3):
-        atributos_artista:list = lista_cancion[i].artists
-        print(f"{i+1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+    mal_ingreso_cancion:bool = True
+    while mal_ingreso_cancion:
+        try:
+            buscar:tuple = spotify.search(query=nombre_cancion_a_buscar, limit=3)
+            lista_cancion:list = buscar[0].items
+            for i in range(3):
+                atributos_artista:list = lista_cancion[i].artists
+                print(f"{i+1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+            mal_ingreso_cancion:bool = False
+        except Exception:
+            print("Ingrese una canción válida")
+            nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+            mal_ingreso_cancion:bool = True
     
     cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
     #Validación de que sea un número
