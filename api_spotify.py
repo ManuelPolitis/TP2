@@ -38,6 +38,10 @@ def mostrar_playlist(spotify) -> None:
         contador += 1
 
 def exportar_csv(spotify) -> None:
+    """
+    Exporta un csv con los atributos indicados mas abajo.
+    Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
+    """
     contador: int = int()
     user_id: str = spotify.current_user().id
     lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
@@ -45,10 +49,12 @@ def exportar_csv(spotify) -> None:
     
     for track in lista_playlist:
         print(f"{contador + 1} - {track.name} - {track.id}")
-        contador +=1
+        contador +=1 
+        #Muestra las playlist con sus respectivos ID
     
     in_range:bool = False
     is_int:bool = False
+    #Validamos que el número de playlist elegido sea un entero y se encuentre dentro del rango
     while not is_int or not in_range:
     
         try:
@@ -67,6 +73,7 @@ def exportar_csv(spotify) -> None:
                 in_range = True
     
     id_playlist:str = lista_playlist[numero_de_playlist-1].id
+    #Consigo el id de la playlist seleccionada para buscar los atributos
     nombre_playlist:str = lista_playlist[numero_de_playlist-1].name
     print(f"Eligio la playlist : {nombre_playlist}, id: {id_playlist}")
     link_playlist:str = (f"https://open.spotify.com/playlist/{id_playlist}")
@@ -78,6 +85,7 @@ def exportar_csv(spotify) -> None:
     lista_canciones = []
     tiempo: int = 0
     lista_artistas = []
+    #Listas de artistas y de canciones, luego de completarlas las seteamos para eliminar los elementos repetidos
     for i in range(cantidad_canciones):
         
         try:
@@ -91,14 +99,16 @@ def exportar_csv(spotify) -> None:
         lista_canciones.append(musico.name)
         tiempo += musico.duration_ms
 
-    
+    #Como el tiempo nos lo dan en milisegundos divido por mil
     tiempo = tiempo/1000
+    
     nombres_artistas:set = set(lista_artistas)
     
     cantidad_artistas:int = len(nombres_artistas)
     
     nombres_canciones:set = set(lista_canciones)
     cantidad_canciones:int = len(nombres_canciones)
+    #Volvemos a contar las canciones pero ahora sin los repetidos
 
     with open(f'playlist_{nombre_playlist}.csv','w',newline='',encoding='UTF-8') as archivo_csv:
         csv_writer = csv.writer(archivo_csv,delimiter =',',quotechar='"',quoting=csv.QUOTE_NONNUMERIC)
@@ -116,12 +126,13 @@ def exportar_csv(spotify) -> None:
             "ID del propietario",
             "link de playlist",
             "Duración de playlist en segundos"))
-        
+            #Son 13 atributos, no sabía cual dejar afuera asi que mejor ninguno
         print('')
         print('Creando archivo CSV...')
 
         
         try:
+            #Muchas variables ya las cree con anterioridad porque requieren un poco más de desarrollo, las simples unicamente las llame con la función
             csv_writer.writerow((
                 spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).id,
                 spotify.playlist(id_playlist, fields=None, market=None, as_tracks=False).name,
