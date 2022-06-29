@@ -19,7 +19,7 @@ def letra_cancion(titulo,artista) -> str:
     cancion = genius.search_song(titulo, artista)
 
     try:
-        print("Letra: \n",cancion.lyrics,"\n")
+        return cancion.lyrics
 
     except AttributeError:
         confirmacion = 0
