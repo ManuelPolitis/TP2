@@ -1,5 +1,7 @@
 import modulo_youtube
 import os
+import api_spotify
+import tekore as tk
 
 def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
@@ -56,36 +58,60 @@ Menu Principal TP2
 
         cls()
 
+        def autenticacion_spotify():
+            print("Autenticacion Spotify: \n")
+            Spotify = tk.Spotify(api_spotify.pedir_token())
+            return Spotify
+
         if eleccion == 1:
+            print("Autenticacion Youtube: \n")
             modulo_youtube.autenticar()
+            print("")
+            Spotify = autenticacion_spotify()
 
         if eleccion == 2:
             if plataforma == 'youtube':
                 modulo_youtube.nombre_playlists()
 
             if plataforma == 'spotify':
-                pass
+                try:
+                    api_spotify.mostrar_playlist(Spotify)
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.mostrar_playlist(Spotify)
 
         if eleccion == 3:
             if plataforma == 'youtube':
                 modulo_youtube.playlist_csv()
 
             if plataforma == 'spotify':
-                pass
+                try:
+                    api_spotify.exportar_csv(Spotify)
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.exportar_csv(Spotify)
 
         if eleccion == 4:
             if plataforma == 'youtube':
                 modulo_youtube.crear_playlists()
 
             if plataforma == 'spotify':
-                pass
+                try:
+                    api_spotify.crear_playlist(Spotify)
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.crear_playlist(Spotify)
 
         if eleccion == 5:
             if plataforma == 'youtube':
                 modulo_youtube.agregar_cancion()
 
             if plataforma == 'spotify':
-                pass
+                try:
+                    api_spotify.buscar_nuevos_elementos(Spotify)
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.buscar_nuevos_elementos(Spotify)
 
         if eleccion == 6:
             pass
@@ -96,6 +122,7 @@ Menu Principal TP2
         if eleccion == 8:
             continuar = False
 
+        print("")
         confirmacion:str = (input('Desea continuar? (s/n): ')).lower()
 
         while confirmacion != 's' and confirmacion != 'n':
