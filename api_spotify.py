@@ -228,3 +228,7 @@ def buscar_nuevos_elementos(spotify) -> None:
                     print('El valor ingresado no esta dentro del rango posible.')
                 else:
                     in_range = True
+        
+        uri_cancion = lista_cancion[cancion_elegida-1].uri
+        agregar_cancion = spotify.playlist_add(playlist_id=lista_playlist[numero_de_playlist-1].id, uris=[uri_cancion])
+        print("¡Canción agregada con éxito!")
