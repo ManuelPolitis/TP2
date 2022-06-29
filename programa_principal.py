@@ -98,10 +98,10 @@ Menu Principal TP2
 
             if plataforma == 'spotify':
                 try:
-                    api_spotify.crear_playlist(Spotify)
+                    api_spotify.crear_playlist(Spotify,"nombre_con_input")
                 except UnboundLocalError:
                     Spotify = autenticacion_spotify()
-                    api_spotify.crear_playlist(Spotify)
+                    api_spotify.crear_playlist(Spotify,"nombre_con_input")
 
         if eleccion == 5:
             if plataforma == 'youtube':
@@ -124,7 +124,19 @@ Menu Principal TP2
                     input("Indique la plataforma origen de la playlist a sincronizar (youtube/spotify): ")).lower()
 
             if plataforma == "youtube":
-                pass
+                datos_playlist:list = modulo_youtube.conseguir_nombre_playlist_y_sus_canciones()
+                try:
+                    api_spotify.crear_playlist(Spotify,datos_playlist[0])
+
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.crear_playlist(Spotify,datos_playlist[0])
+
+
+
+
+
+
 
             elif plataforma == "spotify":
                 try:

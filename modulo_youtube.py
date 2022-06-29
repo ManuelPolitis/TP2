@@ -536,3 +536,82 @@ def agregar_grupo_de_canciones_a_playlist(lista_titulos_y_artistas,idplaylist_a_
             print(
                 f'Archivo creado exitosamente! Nombre del archivo: Canciones_no_disponibles.csv')
 
+def conseguir_nombre_playlist_y_sus_canciones():
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    request = youtube.playlists().list(part="snippet", mine=True,
+                                       maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    response = request.execute()
+
+    cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+
+    nombre_de_playlists: dict = {}
+    id_de_playlists: dict = {}
+
+    for i in range(0,
+                   cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+        nombre_de_playlists[i + 1] = response["items"][i]["snippet"]["title"]
+        id_de_playlists[i + 1] = response["items"][i]["id"]
+
+    cls()
+
+    print("Tus Playlists:\n")
+    for indice, nombre in nombre_de_playlists.items():
+        print(f"{indice}) {nombre}")
+
+    print("")
+    is_Int: bool = False
+    in_Range: bool = False
+
+    while not is_Int or not in_Range:
+        try:
+            playlist_a_modificar: int = input(
+                "Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ")  # Puedo crear funcion validar
+            playlist_a_modificar: int = int(playlist_a_modificar)
+            is_Int = True
+
+        except ValueError:
+            print('Valor no numerico!')
+            is_Int = False
+
+        if is_Int:
+            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_Range = True
+
+    nombre_playlist:str = nombre_de_playlists[playlist_a_modificar]
+    playlist_ID: str = id_de_playlists[playlist_a_modificar]
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+    youtube = build('youtube', 'v3', credentials=credentials)
+    request = youtube.playlistItems().list(part="snippet", playlistId = playlist_ID,
+                                       maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    response = request.execute()
+
+    titulo_y_artista:list = []
+
+    for i in range(0,len(response['items'])):
+        titulo = response['items'][i]['snippet']['title']
+
+        contador_letra = 0
+        ultima_letra = 0
+        for x in titulo: #saco lo que esta entre parentesis
+
+                if x == '(':
+                    ultima_letra = contador_letra
+
+                if ultima_letra != 0:
+                    titulo=titulo[0:ultima_letra]
+
+                contador_letra+=1
+
+
+        artista = response['items'][i]['snippet']['videoOwnerChannelTitle']
+        titulo_y_artista.append([titulo,artista])
+
+
+    return [nombre_playlist,titulo_y_artista]

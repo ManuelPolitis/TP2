@@ -179,16 +179,25 @@ def exportar_csv(spotify) -> None:
 
         print(f'Archivo creado exitosamente! Nombre del archivo: playlist_{nombre_playlist}.csv')
 
-def crear_playlist(spotify) -> None:
+def crear_playlist(spotify,nombre_con_input) -> None:
     """
     Crea una playlist vacía a partir de los datos que ingresa el usuario.
-    Precondicion: Recibe una instancia de la clase Spotify creada a partir del token.
+    Precondicion: Recibe una instancia de la clase Spotify creada a partir del token. Y depende la llamada recibe un nombre de playlist dato
     """
-    user_id: str = spotify.current_user().id
-    nombre: str = input('Ingrese el nombre de la playlist: ')
-    descripcion: str = input('Escriba una descripción: ')
+    if nombre_con_input == "nombre_con_input":
+        user_id: str = spotify.current_user().id
+        nombre: str = input('Ingrese el nombre de la playlist: ')
+        descripcion: str = input('Escriba una descripción: ')
+
+    else:
+        user_id: str = spotify.current_user().id
+        nombre: str = nombre_con_input
+        descripcion: str = "Lista clonada desde Youtube"
+
 
     spotify.playlist_create(user_id, nombre, True, descripcion)
+
+    print(spotify.playlist.id)
 
 def buscar_nuevos_elementos(spotify) -> None:
     """
@@ -398,9 +407,5 @@ def funcion_letras(spotify):
         letras.append(letra)
 
     return letras
-
-
-
-
 
 
