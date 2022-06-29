@@ -218,7 +218,7 @@ def buscar_nuevos_elementos(spotify) -> None:
     cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
     while cancion_elegida_es_int == False:
         print("Ingrese valores enteros")
-        cancion_elegida_str = input("Ingrese las figuritas del alumno o 0 sino ingresa más: ")
+        cancion_elegida_str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
         cancion_elegida_es_int = cancion_elegida_str.isdigit()
     if cancion_elegida_es_int == True:
         cancion_elegida:int = int(cancion_elegida_str)
@@ -230,7 +230,7 @@ def buscar_nuevos_elementos(spotify) -> None:
         cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
         while cancion_elegida_es_int == False:
             print("Ingrese valores enteros")
-            cancion_elegida_str = input("Ingrese las figuritas del alumno o 0 sino ingresa más: ")
+            cancion_elegida_str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
             cancion_elegida_es_int = cancion_elegida_str.isdigit()
         if cancion_elegida_es_int == True:
             cancion_elegida:int = int(cancion_elegida_str)
