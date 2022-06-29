@@ -291,8 +291,8 @@ def buscar_nuevos_elementos(spotify) -> None:
 
     print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name,"youtube"))
 
-def funcion_letras(spotify):
 
+def obtener_titulo_y_artista_de_playlist(spotify) -> list:
     contador: int = int()
     user_id: str = spotify.current_user().id
     lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
@@ -309,7 +309,8 @@ def funcion_letras(spotify):
     while not is_int or not in_range:
 
         try:
-            numero_de_playlist: int = input('\nElija de la lista de playlists, cual quiere analizar sus letras (1/2/3/4/...): ')
+            numero_de_playlist: int = input(
+                '\nElija de la lista de playlists con la que desea trabajar (1/2/3/4/...): ')
             numero_de_playlist: int = int(numero_de_playlist)
             is_int = True
 
@@ -362,27 +363,33 @@ def funcion_letras(spotify):
     nombres_canciones: list = lista_canciones
     cantidad_canciones: int = len(nombres_canciones)
 
-    titulo_y_artista:list = []
+    titulo_y_artista: list = []
 
-    for i in range(0,cantidad_canciones):
+    for i in range(0, cantidad_canciones):
 
         titulo = nombres_canciones[i]
 
         contador_letra = 0
         ultima_letra = 0
-        for x in titulo: #saco lo que esta entre parentesis
+        for x in titulo:  # saco lo que esta entre parentesis
 
-                if x == '(':
-                    ultima_letra = contador_letra
+            if x == '(':
+                ultima_letra = contador_letra
 
-                if ultima_letra != 0:
-                    titulo=titulo[0:ultima_letra]
+            if ultima_letra != 0:
+                titulo = titulo[0:ultima_letra]
 
-                contador_letra+=1
-
+            contador_letra += 1
 
         artista = nombres_artistas[i]
-        titulo_y_artista.append([titulo,artista])
+        titulo_y_artista.append([titulo, artista])
+
+    return [titulo_y_artista,nombre_playlist]
+
+
+def funcion_letras(spotify):
+
+    titulo_y_artista:list = obtener_titulo_y_artista_de_playlist(spotify)
 
     letras:list = []
 
@@ -391,3 +398,9 @@ def funcion_letras(spotify):
         letras.append(letra)
 
     return letras
+
+
+
+
+
+
