@@ -25,26 +25,6 @@ def pedir_token():
 
     return token
 
-def autenticar(token=None):
-    """
-    Si recibe un token, verifica que sea válido y lo refresca.
-    De lo contrario, solicita uno nuevo.
-
-    Precondicion: Recibe un token (opcional).
-    Postcondicion: Devuelve un token válido
-    """
-    if token:
-        try:
-            print('Refrescando token...')
-            token = tk.refresh_user_token(CLIENT_ID, CLIENT_SECRET, token.refresh_token)
-        except:
-            token = pedir_token() #Si el token expiró, solicita uno nuevo
-
-    else:
-        token = pedir_token()
-
-    return token
-
 def mostrar_playlist(spotify) -> None:
     """
     Muestra las primeras 50 playlists que tenga el usuario.
