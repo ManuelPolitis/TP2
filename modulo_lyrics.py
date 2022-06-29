@@ -9,7 +9,7 @@ def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def letra_cancion(titulo,artista):
+def letra_cancion(titulo,artista) -> str:
     """Busca la cancion del artista que fueron pasados por parametro
     Precondciones: Se le debe pasar a la funcion por parametro el nombre de la cancion
     a buscar y el artista de la misma."""
@@ -30,6 +30,9 @@ def letra_cancion(titulo,artista):
         print("Valor invalido introducido. Prueba otra vez")
         confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
 
+    if confirmacion.lower() == 's':
+        return cancion.lyrics
+
     if confirmacion.lower() == "n":
         cls()
         print("Para ser mas preciso en la busqueda de la letra, especifique el titulo y nombre del artista correctamente")
@@ -39,8 +42,8 @@ def letra_cancion(titulo,artista):
         cancion = genius.search_song(titulo, artista)
 
         try:
-            print("Letra: \n", cancion.lyrics)
+            return cancion.lyrics
 
         except AttributeError:
-            print("")
+            return ""
 
