@@ -186,3 +186,10 @@ def buscar_nuevos_elementos(spotify) -> None:
             cancion_elegida_es_int = cancion_elegida_str.isdigit()
         if cancion_elegida_es_int == True:
             cancion_elegida:int = int(cancion_elegida_str)
+    
+    atributos_artista:list = lista_cancion[cancion_elegida-1].artists
+    album:list = lista_cancion[cancion_elegida-1].album
+    
+    print("\nNombre de la canción:",lista_cancion[cancion_elegida-1].name)
+    print("Artista:",atributos_artista[0].name)
+    print("Album:",album.name)
