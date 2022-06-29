@@ -193,3 +193,18 @@ def buscar_nuevos_elementos(spotify) -> None:
     print("\nNombre de la canción:",lista_cancion[cancion_elegida-1].name)
     print("Artista:",atributos_artista[0].name)
     print("Album:",album.name)
+
+    confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+
+    while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "n":
+        confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+
+    if confirmacion_agregar.lower() == "s":
+        contador: int = int()
+        user_id: str = spotify.current_user().id
+        lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
+        print("\nSu lista de playlists es: ")
+    
+        for track in lista_playlist:
+            print(f"{contador + 1} - {track.name} - {track.id}")
+            contador +=1
