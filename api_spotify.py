@@ -198,7 +198,7 @@ def buscar_nuevos_elementos(spotify) -> None:
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
 
     """
-    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la canción y el artista: ')
     mal_ingreso_cancion:bool = True
     while mal_ingreso_cancion:
         try:
@@ -210,7 +210,7 @@ def buscar_nuevos_elementos(spotify) -> None:
             mal_ingreso_cancion:bool = False
         except Exception:
             print("Ingrese una canción válida")
-            nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+            nombre_cancion_a_buscar: str = input('Ingrese el nombre de la canción: ')
             mal_ingreso_cancion:bool = True
     
     cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
@@ -245,7 +245,7 @@ def buscar_nuevos_elementos(spotify) -> None:
     confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
     while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "n":
-        confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+        confirmacion_agregar:str = input("Valor ingresado inválido. ¿Desea agregar esta canción a una de sus playlists? (S/N): ")
 
     if confirmacion_agregar.lower() == "s":
         contador: int = int()
@@ -269,13 +269,13 @@ def buscar_nuevos_elementos(spotify) -> None:
                 is_int = True
             
             except ValueError:
-                print('Valor no numerico!')
+                print('Valor no numérico!')
                 is_int = False
             
             
             if is_int:
                 if numero_de_playlist > contador or numero_de_playlist < 0:
-                    print('El valor ingresado no esta dentro del rango posible.')
+                    print('El valor ingresado no está dentro del rango posible.')
                 else:
                     in_range = True
                 
@@ -284,7 +284,7 @@ def buscar_nuevos_elementos(spotify) -> None:
                         agregar_cancion = spotify.playlist_add(playlist_id=lista_playlist[numero_de_playlist-1].id, uris=[uri_cancion])
                         valid_playlist = True
                     except Exception:
-                        print("La Playlist no es de su propiedad, pruebe con otra que si lo sea")
+                        print("La Playlist no es de su propiedad, pruebe con otra que sí lo sea")
                         valid_playlist = False
 
         print("¡Canción agregada con éxito!")
