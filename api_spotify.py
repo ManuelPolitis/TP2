@@ -164,3 +164,25 @@ def buscar_nuevos_elementos(spotify) -> None:
     for i in range(3):
         atributos_artista:list = lista_cancion[i].artists
         print(f"{i+1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+    
+    cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
+    #Validación de que sea un número
+    cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
+    while cancion_elegida_es_int == False:
+        print("Ingrese valores enteros")
+        cancion_elegida_str = input("Ingrese las figuritas del alumno o 0 sino ingresa más: ")
+        cancion_elegida_es_int = cancion_elegida_str.isdigit()
+    if cancion_elegida_es_int == True:
+        cancion_elegida:int = int(cancion_elegida_str)
+    
+    while cancion_elegida > 3 or cancion_elegida <= 0:
+        print("Ingrese valores entre 1 y 3")
+        cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
+        #Validación de que sea un número
+        cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
+        while cancion_elegida_es_int == False:
+            print("Ingrese valores enteros")
+            cancion_elegida_str = input("Ingrese las figuritas del alumno o 0 sino ingresa más: ")
+            cancion_elegida_es_int = cancion_elegida_str.isdigit()
+        if cancion_elegida_es_int == True:
+            cancion_elegida:int = int(cancion_elegida_str)
