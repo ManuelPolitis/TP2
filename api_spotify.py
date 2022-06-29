@@ -191,6 +191,13 @@ def crear_playlist(spotify) -> None:
     spotify.playlist_create(user_id, nombre, True, descripcion)
 
 def buscar_nuevos_elementos(spotify) -> None:
+    """
+    Busca la canción que ingresa el usuario y muestra los 3 resultados más populares. Luego,
+    da a elegir al usuario si quiere agregarla a alguna de sus playlists. Indefectiblemente,
+    muestra la letra de la canción mediante el modulo_lyrics.
+    Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
+
+    """
     nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
     mal_ingreso_cancion:bool = True
     while mal_ingreso_cancion:
