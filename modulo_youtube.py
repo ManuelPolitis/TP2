@@ -346,7 +346,7 @@ def agregar_cancion():
 
     cls()
 
-    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar))
+    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar,"youtube"))
 
 def funcion_letras()->list:
 
@@ -426,10 +426,10 @@ def funcion_letras()->list:
 
     letras:list = []
 
+
     for nombre_cancion_a_buscar, artista_cancion_a_buscar in titulo_y_artista:
-        letras.append(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,''))
+        letra = modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,'',"youtube")
+        letras.append(letra)
 
     return letras
-
-
 

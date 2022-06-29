@@ -216,11 +216,11 @@ def buscar_nuevos_elementos(spotify) -> None:
     cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
     #Validación de que sea un número
     cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
-    while cancion_elegida_es_int == False:
+    while not cancion_elegida_es_int:
         print("Ingrese valores enteros")
         cancion_elegida_str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
         cancion_elegida_es_int = cancion_elegida_str.isdigit()
-    if cancion_elegida_es_int == True:
+    if cancion_elegida_es_int:
         cancion_elegida:int = int(cancion_elegida_str)
     
     while cancion_elegida > 3 or cancion_elegida <= 0:
@@ -228,11 +228,11 @@ def buscar_nuevos_elementos(spotify) -> None:
         cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
         #Validación de que sea un número
         cancion_elegida_es_int:bool = cancion_elegida_str.isdigit()
-        while cancion_elegida_es_int == False:
+        while not cancion_elegida_es_int:
             print("Ingrese valores enteros")
             cancion_elegida_str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
             cancion_elegida_es_int = cancion_elegida_str.isdigit()
-        if cancion_elegida_es_int == True:
+        if cancion_elegida_es_int:
             cancion_elegida:int = int(cancion_elegida_str)
     
     atributos_artista:list = lista_cancion[cancion_elegida-1].artists
@@ -289,4 +289,105 @@ def buscar_nuevos_elementos(spotify) -> None:
 
         print("¡Canción agregada con éxito!")
 
-    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name))
+    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name,"youtube"))
+
+def funcion_letras(spotify):
+
+    contador: int = int()
+    user_id: str = spotify.current_user().id
+    lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
+    print("\nLa lista es: ")
+
+    for track in lista_playlist:
+        print(f"{contador + 1} - {track.name} - {track.id}")
+        contador += 1
+    # Muestra las playlist con sus respectivos ID
+
+    in_range: bool = False
+    is_int: bool = False
+    # Validamos que el número de playlist elegido sea un entero y se encuentre dentro del rango
+    while not is_int or not in_range:
+
+        try:
+            numero_de_playlist: int = input('\nElija de la lista de playlists, cual quiere analizar sus letras (1/2/3/4/...): ')
+            numero_de_playlist: int = int(numero_de_playlist)
+            is_int = True
+
+        except ValueError:
+            print('Valor no numerico!')
+            is_int = False
+
+        if is_int:
+            if numero_de_playlist > contador or numero_de_playlist < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_range = True
+
+    id_playlist: str = lista_playlist[numero_de_playlist - 1].id
+    # Consigo el id de la playlist seleccionada para buscar los atributos
+    nombre_playlist: str = lista_playlist[numero_de_playlist - 1].name
+    print(f"Eligio la playlist : {nombre_playlist}, id: {id_playlist}")
+    link_playlist: str = (f"https://open.spotify.com/playlist/{id_playlist}")
+
+    cantidad_canciones = (
+        spotify.playlist_items(id_playlist, fields=None, market=None, as_tracks=False, limit=100, offset=0)).total
+
+    artistas = (
+        spotify.playlist_items(id_playlist, fields=None, market=None, as_tracks=False, limit=100, offset=0)).items
+
+    lista_canciones = []
+    tiempo: int = 0
+    lista_artistas = []
+    # Listas de artistas y de canciones, luego de completarlas las seteamos para eliminar los elementos repetidos
+    for i in range(cantidad_canciones):
+
+        try:
+            musico = artistas[i].track
+            nombre_musico = musico.artists[0]
+            lista_artistas.append(nombre_musico.name)
+
+        except Exception:
+            None
+
+        lista_canciones.append(musico.name)
+        tiempo += musico.duration_ms
+
+    # Como el tiempo nos lo dan en milisegundos divido por mil
+    tiempo = tiempo / 1000
+
+    nombres_artistas: list = lista_artistas
+
+    cantidad_artistas: int = len(nombres_artistas)
+
+    nombres_canciones: list = lista_canciones
+    cantidad_canciones: int = len(nombres_canciones)
+
+    titulo_y_artista:list = []
+
+    for i in range(0,cantidad_canciones):
+
+        titulo = nombres_canciones[i]
+
+        contador_letra = 0
+        ultima_letra = 0
+        for x in titulo: #saco lo que esta entre parentesis
+
+                if x == '(':
+                    ultima_letra = contador_letra
+
+                if ultima_letra != 0:
+                    titulo=titulo[0:ultima_letra]
+
+                contador_letra+=1
+
+
+        artista = nombres_artistas[i]
+        titulo_y_artista.append([titulo,artista])
+
+    letras:list = []
+
+    for cancion,artista in titulo_y_artista:
+        letra = modulo_lyrics.letra_cancion(cancion,artista,"spotify")
+        letras.append(letra)
+
+    return letras
