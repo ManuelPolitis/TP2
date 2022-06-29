@@ -1,5 +1,6 @@
 import tekore as tk
 import csv
+import modulo_lyrics
 
 CLIENT_ID: str = '6d3faa7cfb01460bacc1605a2f508e0d'
 CLIENT_SECRET: str = '1e159178e8ca443498e3ec58f25fd792'
@@ -11,25 +12,46 @@ def pedir_token():
     Postcondicion: Retornará el token obtenido a partir de los datos del usuario.
     """
     conf: tuple = (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+    valido: bool = False
 
-    valido:bool = False
-    
     while not valido:
+
         try:
             token = tk.prompt_for_user_token(*conf, tk.scope.every)
             valido = True
         except KeyError:
             print("\nCopio mal el URL, pruebe hacerlo de nuevo")
             valido = False
+
+    return token
+
+def autenticar(token=None):
+    """
+    Si recibe un token, verifica que sea válido y lo refresca.
+    De lo contrario, solicita uno nuevo.
+
+    Precondicion: Recibe un token (opcional).
+    Postcondicion: Devuelve un token válido
+    """
+    if token:
+        try:
+            print('Refrescando token...')
+            token = tk.refresh_user_token(CLIENT_ID, CLIENT_SECRET, token.refresh_token)
+        except:
+            token = pedir_token() #Si el token expiró, solicita uno nuevo
+
+    else:
+        token = pedir_token()
+
     return token
 
 def mostrar_playlist(spotify) -> None:
     """
-    Muestra las primeras 20 playlists que tenga el usuario.
+    Muestra las primeras 50 playlists que tenga el usuario.
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
     """
     contador: int = int()
-    playlists = spotify.followed_playlists(limit=20).items
+    playlists = spotify.followed_playlists(limit=50).items
 
     print('\nListas de reproducción: ')
 
@@ -44,14 +66,14 @@ def exportar_csv(spotify) -> None:
     """
     contador: int = int()
     user_id: str = spotify.current_user().id
-    lista_playlist = spotify.playlists(user_id, limit=20, offset=0).items
+    lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
     print("\nLa lista es: ")
     
     for track in lista_playlist:
         print(f"{contador + 1} - {track.name} - {track.id}")
-        contador +=1 
-        #Muestra las playlist con sus respectivos ID
-    
+        contador +=1
+    #Muestra las playlist con sus respectivos ID
+
     in_range:bool = False
     is_int:bool = False
     #Validamos que el número de playlist elegido sea un entero y se encuentre dentro del rango
@@ -101,7 +123,7 @@ def exportar_csv(spotify) -> None:
 
     #Como el tiempo nos lo dan en milisegundos divido por mil
     tiempo = tiempo/1000
-    
+
     nombres_artistas:set = set(lista_artistas)
     
     cantidad_artistas:int = len(nombres_artistas)
@@ -126,7 +148,8 @@ def exportar_csv(spotify) -> None:
             "ID del propietario",
             "link de playlist",
             "Duración de playlist en segundos"))
-            #Son 13 atributos, no sabía cual dejar afuera asi que mejor ninguno
+        
+        #Son 13 atributos, no sabía cual dejar afuera asi que mejor ninguno
         print('')
         print('Creando archivo CSV...')
 
@@ -169,12 +192,19 @@ def crear_playlist(spotify) -> None:
 
 def buscar_nuevos_elementos(spotify) -> None:
     nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
-
-    buscar:tuple = spotify.search(query=nombre_cancion_a_buscar, limit=3)
-    lista_cancion:list = buscar[0].items
-    for i in range(3):
-        atributos_artista:list = lista_cancion[i].artists
-        print(f"{i+1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+    mal_ingreso_cancion:bool = True
+    while mal_ingreso_cancion:
+        try:
+            buscar:tuple = spotify.search(query=nombre_cancion_a_buscar, limit=3)
+            lista_cancion:list = buscar[0].items
+            for i in range(3):
+                atributos_artista:list = lista_cancion[i].artists
+                print(f"{i+1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+            mal_ingreso_cancion:bool = False
+        except Exception:
+            print("Ingrese una canción válida")
+            nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+            mal_ingreso_cancion:bool = True
     
     cancion_elegida_str:str = input("Ingrese el número de la canción que desea visualizar (1/2/3): ")
     #Validación de que sea un número
@@ -222,7 +252,9 @@ def buscar_nuevos_elementos(spotify) -> None:
     
         in_range:bool = False
         is_int:bool = False
-        while not is_int or not in_range:
+        valid_playlist:bool = False
+        
+        while not is_int or not in_range or not valid_playlist:
         
             try:
                 numero_de_playlist: int = input('\nIngrese el indice de playlist en la que desea agregar la canción: ')
@@ -239,7 +271,15 @@ def buscar_nuevos_elementos(spotify) -> None:
                     print('El valor ingresado no esta dentro del rango posible.')
                 else:
                     in_range = True
-        
-        uri_cancion = lista_cancion[cancion_elegida-1].uri
-        agregar_cancion = spotify.playlist_add(playlist_id=lista_playlist[numero_de_playlist-1].id, uris=[uri_cancion])
+                
+                    try:
+                        uri_cancion = lista_cancion[cancion_elegida-1].uri
+                        agregar_cancion = spotify.playlist_add(playlist_id=lista_playlist[numero_de_playlist-1].id, uris=[uri_cancion])
+                        valid_playlist = True
+                    except Exception:
+                        print("La Playlist no es de su propiedad, pruebe con otra que si lo sea")
+                        valid_playlist = False
+
         print("¡Canción agregada con éxito!")
+
+    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name))
