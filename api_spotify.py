@@ -282,4 +282,4 @@ def buscar_nuevos_elementos(spotify) -> None:
 
         print("¡Canción agregada con éxito!")
 
-        print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name))
+    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name))
