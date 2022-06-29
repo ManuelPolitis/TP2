@@ -409,7 +409,7 @@ def funcion_letras()->list:
 
         contador_letra = 0
         ultima_letra = 0
-        for x in titulo: #saco todo lo que este entre parentesis
+        for x in titulo: #saco lo que esta entre parentesis
 
                 if x == '(':
                     ultima_letra = contador_letra

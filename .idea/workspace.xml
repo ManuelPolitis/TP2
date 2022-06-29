@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a55f285f-663c-42fd-9fa9-6c5d653d8ddf" name="Changes" comment="" />
+    <list default="true" id="a55f285f-663c-42fd-9fa9-6c5d653d8ddf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modulo_youtube.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulo_youtube.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,7 +67,7 @@
       <workItem from="1656447237851" duration="1906000" />
       <workItem from="1656466737210" duration="75000" />
       <workItem from="1656466829612" duration="62000" />
-      <workItem from="1656466947991" duration="317000" />
+      <workItem from="1656466947991" duration="395000" />
     </task>
     <servers />
   </component>
