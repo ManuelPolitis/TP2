@@ -9,7 +9,7 @@ def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def letra_cancion(titulo,artista) -> str:
+def letra_cancion(titulo,artista,plataforma) -> str:
     """Busca la cancion del artista que fueron pasados por parametro
     Precondciones: Se le debe pasar a la funcion por parametro el nombre de la cancion
     a buscar y el artista de la misma."""
@@ -18,29 +18,39 @@ def letra_cancion(titulo,artista) -> str:
 
     cancion = genius.search_song(titulo, artista)
 
-    try:
-        return cancion.lyrics
+    if plataforma == "youtube":
 
-    except AttributeError:
-        confirmacion = 0
+        try:
+            print(cancion.lyrics)
 
-    confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
+        except AttributeError:
+            confirmacion = 0
 
-    while confirmacion.lower() != "s" and confirmacion.lower() != "n":
-        print("Valor invalido introducido. Prueba otra vez")
         confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
 
-    if confirmacion.lower() == 's':
-        return cancion.lyrics
+        while confirmacion.lower() != "s" and confirmacion.lower() != "n":
+            print("Valor invalido introducido. Prueba otra vez")
+            confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
 
-    if confirmacion.lower() == "n":
-        cls()
-        print("Para ser mas preciso en la busqueda de la letra, especifique el titulo y nombre del artista correctamente")
-        titulo:str = input("Titulo de la cancion: ")
-        artista:str = input("Artista de la cancion: ")
+        if confirmacion.lower() == 's':
+            return cancion.lyrics
 
-        cancion = genius.search_song(titulo, artista)
+        if confirmacion.lower() == "n":
+            cls()
+            print("Para ser mas preciso en la busqueda de la letra, especifique el titulo y nombre del artista correctamente")
+            titulo:str = input("Titulo de la cancion: ")
+            artista:str = input("Artista de la cancion: ")
 
+            cancion = genius.search_song(titulo, artista)
+
+            try:
+                print(cancion.lyrics)
+                return cancion.lyrics
+
+            except AttributeError:
+                return ""
+
+    if plataforma == "spotify":
         try:
             return cancion.lyrics
 

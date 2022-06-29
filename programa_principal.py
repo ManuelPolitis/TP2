@@ -2,6 +2,7 @@ import modulo_youtube
 import os
 import api_spotify
 import tekore as tk
+import punto_7
 
 def cls() -> None:
     """Funcion para limpiar la consola, el condicional hace que sirva tanto para linux como para windows"""
@@ -48,7 +49,7 @@ Menu Principal TP2
 
         print('')
 
-        if eleccion == 2 or eleccion == 3 or eleccion == 4 or eleccion == 5:
+        if eleccion == 2 or eleccion == 3 or eleccion == 4 or eleccion == 5 or eleccion == 7:
             plataforma:str = (input('Ingrese en que plataforma desea realizar la accion (youtube/spotify): ')).lower()
 
             while plataforma != 'youtube' and plataforma != 'spotify':
@@ -117,7 +118,20 @@ Menu Principal TP2
             pass
 
         if eleccion == 7:
-            pass
+            if plataforma == 'youtube':
+                letras = modulo_youtube.funcion_letras()
+                punto_7.punto7(letras)
+
+            if plataforma == 'spotify':
+                try:
+                    letras = api_spotify.funcion_letras(Spotify)
+
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    letras = api_spotify.funcion_letras(Spotify)
+                cls()
+                punto_7.punto7(letras)
+
 
         if eleccion == 8:
             continuar = False
