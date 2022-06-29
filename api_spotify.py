@@ -1,5 +1,6 @@
 import tekore as tk
 import csv
+import modulo_lyrics
 
 CLIENT_ID: str = '6d3faa7cfb01460bacc1605a2f508e0d'
 CLIENT_SECRET: str = '1e159178e8ca443498e3ec58f25fd792'
@@ -280,3 +281,5 @@ def buscar_nuevos_elementos(spotify) -> None:
                         valid_playlist = False
 
         print("¡Canción agregada con éxito!")
+
+        print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,atributos_artista[0].name))
