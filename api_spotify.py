@@ -208,3 +208,23 @@ def buscar_nuevos_elementos(spotify) -> None:
         for track in lista_playlist:
             print(f"{contador + 1} - {track.name} - {track.id}")
             contador +=1
+    
+        in_range:bool = False
+        is_int:bool = False
+        while not is_int or not in_range:
+        
+            try:
+                numero_de_playlist: int = input('\nIngrese el indice de playlist en la que desea agregar la canción: ')
+                numero_de_playlist:int = int(numero_de_playlist)
+                is_int = True
+            
+            except ValueError:
+                print('Valor no numerico!')
+                is_int = False
+            
+            
+            if is_int:
+                if numero_de_playlist > contador or numero_de_playlist < 0:
+                    print('El valor ingresado no esta dentro del rango posible.')
+                else:
+                    in_range = True
