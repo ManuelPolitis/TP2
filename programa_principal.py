@@ -94,14 +94,14 @@ Menu Principal TP2
 
         if eleccion == 4:
             if plataforma == 'youtube':
-                modulo_youtube.crear_playlists()
+                modulo_youtube.crear_playlists("nombre_a_indicar")
 
             if plataforma == 'spotify':
                 try:
-                    api_spotify.crear_playlist(Spotify)
+                    api_spotify.crear_playlist(Spotify,"nombre_con_input")
                 except UnboundLocalError:
                     Spotify = autenticacion_spotify()
-                    api_spotify.crear_playlist(Spotify)
+                    api_spotify.crear_playlist(Spotify,"nombre_con_input")
 
         if eleccion == 5:
             if plataforma == 'youtube':
@@ -115,7 +115,40 @@ Menu Principal TP2
                     api_spotify.buscar_nuevos_elementos(Spotify)
 
         if eleccion == 6:
-            pass
+            plataforma: str = (
+                input("Indique la plataforma origen de la playlist a sincronizar (youtube/spotify): ")).lower()
+
+            while plataforma != 'youtube' and plataforma != 'spotify':
+                print('Plataforma invalida.')
+                plataforma: str = (
+                    input("Indique la plataforma origen de la playlist a sincronizar (youtube/spotify): ")).lower()
+
+            if plataforma == "youtube":
+                datos_playlist:list = modulo_youtube.conseguir_nombre_playlist_y_sus_canciones()
+                try:
+                    api_spotify.crear_playlist(Spotify,datos_playlist[0])
+                    api_spotify.buscar_playlist_creada_y_agregar_canciones(Spotify,datos_playlist)
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    api_spotify.crear_playlist(Spotify,datos_playlist[0])
+                    api_spotify.buscar_playlist_creada_y_agregar_canciones(Spotify,datos_playlist)
+
+
+            elif plataforma == "spotify":
+                try:
+                    lista_obtenida:list = api_spotify.obtener_titulo_y_artista_de_playlist(Spotify)
+
+                except UnboundLocalError:
+                    Spotify = autenticacion_spotify()
+                    lista_obtenida:list = api_spotify.obtener_titulo_y_artista_de_playlist(Spotify)
+
+                lista_titulos_y_artistas:list = lista_obtenida[0]
+                titulo_playlist:str = lista_obtenida[1]
+
+                id_playlist_nueva_youtube:str = modulo_youtube.crear_playlists(titulo_playlist)
+
+                modulo_youtube.agregar_grupo_de_canciones_a_playlist(lista_titulos_y_artistas,id_playlist_nueva_youtube)
+
 
         if eleccion == 7:
             if plataforma == 'youtube':
@@ -124,13 +157,17 @@ Menu Principal TP2
 
             if plataforma == 'spotify':
                 try:
-                    letras = api_spotify.funcion_letras(Spotify)
+                    try:
+                        letras = api_spotify.funcion_letras(Spotify)
 
-                except UnboundLocalError:
-                    Spotify = autenticacion_spotify()
-                    letras = api_spotify.funcion_letras(Spotify)
-                cls()
-                punto_7.punto7(letras)
+                    except UnboundLocalError:
+                        Spotify = autenticacion_spotify()
+                        letras = api_spotify.funcion_letras(Spotify)
+                    cls()
+                    punto_7.punto7(letras)
+
+                except IndexError:
+                    print("Ingrese una playlist con menos de 100 canciones.")
 
 
         if eleccion == 8:

@@ -82,7 +82,7 @@ def nombre_playlists()->list:
     return nombre_de_playlists
 
 
-def crear_playlists():
+def crear_playlists(nombreplaylist):
     """Precondiciones: Crea una nueva playlist en la cuenta del usuario preguntandole por el titulo, descripcion de la playlist
     y si quiere que la misma sea privada o publica."""
 
@@ -92,15 +92,24 @@ def crear_playlists():
 
     cls()
 
-    nombre_playlist:str = input('Inserte el nombre de la nueva playlist que desea crear: ')
+    if nombreplaylist == "nombre_a_indicar":
 
-    descripcion_playlist:str = input('Inserte la descripcion de la playlist: ')
+        nombre_playlist:str = input('Inserte el nombre de la nueva playlist que desea crear: ')
 
-    public_o_private:str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+        descripcion_playlist:str = input('Inserte la descripcion de la playlist: ')
 
-    while public_o_private != 'private' and public_o_private != 'public':
-        print('Valor ingresado no valido!. Pruebe otra vez.')
-        public_o_private: str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+        public_o_private:str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+
+        while public_o_private != 'private' and public_o_private != 'public':
+            print('Valor ingresado no valido!. Pruebe otra vez.')
+            public_o_private: str = input('Ingrese "private" si desea que su playlist sea privada. Si desea que sea publica ingrese "public": ')
+
+    else:
+        nombre_playlist:str = nombreplaylist
+
+        descripcion_playlist:str = "playlist clonada desde spotify"
+
+        public_o_private: str = "public"
 
     playlists_insert_response = youtube.playlists().insert( #Inserto la playlist con los datos dados por el usuario
         part="snippet,status",
@@ -122,6 +131,8 @@ def crear_playlists():
           f'Descripcion de la playlist: {descripcion_playlist}\n'
           f'{public_o_private} playlist\n'
           f'Link nueva playlist: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
+
+    return playlists_insert_response["id"]
 
 
 def playlist_csv():
@@ -237,48 +248,47 @@ def agregar_cancion():
 
     indice_a_agregar: int = 0
 
-    while indice_a_agregar == 0:
 
-        cls()
-        nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
-        artista_cancion_a_buscar: str = input("Ingrese el artista de la cancion: ")
+    cls()
+    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+    artista_cancion_a_buscar: str = input("Ingrese el artista de la cancion: ")
 
-        cancion_a_buscar:str = nombre_cancion_a_buscar + " " + artista_cancion_a_buscar
-        cls()
+    cancion_a_buscar:str = nombre_cancion_a_buscar + " " + artista_cancion_a_buscar
+    cls()
 
-        request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
-        response = request.execute()
+    request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
+    response = request.execute()
 
-        diccionario_resultados:dict = {}
+    diccionario_resultados:dict = {}
 
-        print("Resultados:")
+    print("Resultados:")
 
-        for i in range(0, len(response['items'])):
-            print('----------------------------------------------------------------------------------------------------------')
-            print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
-            print(response['items'][i]['snippet']['description'])
-            diccionario_resultados[i+1] = response["items"][i]["id"]["videoId"]
+    for i in range(0, len(response['items'])):
+        print('----------------------------------------------------------------------------------------------------------')
+        print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
+        print(response['items'][i]['snippet']['description'])
+        diccionario_resultados[i+1] = response["items"][i]["id"]["videoId"]
 
-        print('----------------------------------------------------------------------------------------------------------\n')
+    print('----------------------------------------------------------------------------------------------------------\n')
 
-        is_Int: bool = False
-        in_Range: bool = False
+    is_Int: bool = False
+    in_Range: bool = False
 
-        while not is_Int or not in_Range:
-            try:
-                indice_a_agregar: int = int(input('Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
-                is_Int = True
+    while not is_Int or not in_Range:
+        try:
+            indice_a_agregar: int = int(input('Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
+            is_Int = True
 
-            except ValueError:
-                print('Valor no numerico!')
-                is_Int = False
+        except ValueError:
+            print('Valor no numerico!')
+            is_Int = False
 
-            if is_Int:
+        if is_Int:
 
-                if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
-                    print('El valor ingresado no esta dentro del rango posible.')
-                else:
-                    in_Range = True
+            if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_Range = True
 
     print("")
     confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
@@ -433,3 +443,182 @@ def funcion_letras()->list:
 
     return letras
 
+def agregar_grupo_de_canciones_a_playlist(lista_titulos_y_artistas,idplaylist_a_agregar):
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    canciones_no_disponibles:list = []
+
+    for titulo, artista in lista_titulos_y_artistas:
+
+        cancion_a_buscar: str = titulo + " " + artista
+
+        request = youtube.search().list(part='snippet', maxResults=3, type='video',
+                                        q=cancion_a_buscar)  # Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
+        response = request.execute()
+
+        diccionario_resultados: dict = {}
+
+        print(f"Cancion a buscar: {cancion_a_buscar}\n")
+
+        print("Resultados:")
+
+        for i in range(0, len(response['items'])):
+            print(
+                '----------------------------------------------------------------------------------------------------------')
+            print(f'{i + 1}) {response["items"][i]["snippet"]["title"]}')
+            print(response['items'][i]['snippet']['description'])
+            diccionario_resultados[i + 1] = response["items"][i]["id"]["videoId"]
+
+        print(
+            '----------------------------------------------------------------------------------------------------------\n')
+
+        is_Int: bool = False
+        in_Range: bool = False
+
+        while not is_Int or not in_Range:
+            try:
+                indice_a_agregar: int = int(input(
+                    'Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
+                is_Int = True
+
+            except ValueError:
+                print('Valor no numerico!')
+                is_Int = False
+
+            if is_Int:
+
+                if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
+                    print('El valor ingresado no esta dentro del rango posible.')
+                else:
+                    in_Range = True
+
+        if indice_a_agregar == 0:
+            canciones_no_disponibles.append(cancion_a_buscar)
+
+        else:
+            video_ID: str = diccionario_resultados[indice_a_agregar]
+            playlist_ID: str = idplaylist_a_agregar
+
+            request = youtube.playlistItems().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_ID,
+                        "resourceId": {
+                            "kind": "youtube#video",
+                            "videoId": video_ID
+                        }
+                    }
+                }
+            )
+            cls()
+            response = request.execute()
+
+    if len(canciones_no_disponibles)>0:
+        with open(f'Canciones_no_disponibles.csv', 'w', newline='',
+                  encoding='UTF-8') as archivo_csv:
+            csv_writer = csv.writer(archivo_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+            csv_writer.writerow(["Canciones no disponibles"])
+
+            print('')
+            print('Creando archivo CSV...')
+            for i in canciones_no_disponibles:
+                try:
+                    csv_writer.writerow([i])
+
+                except KeyError:
+                    print('')
+
+            print(
+                f'Archivo creado exitosamente! Nombre del archivo: Canciones_no_disponibles.csv')
+
+def conseguir_nombre_playlist_y_sus_canciones():
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    request = youtube.playlists().list(part="snippet", mine=True,
+                                       maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    response = request.execute()
+
+    cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+
+    nombre_de_playlists: dict = {}
+    id_de_playlists: dict = {}
+
+    for i in range(0,
+                   cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+        nombre_de_playlists[i + 1] = response["items"][i]["snippet"]["title"]
+        id_de_playlists[i + 1] = response["items"][i]["id"]
+
+    cls()
+
+    print("Tus Playlists:\n")
+    for indice, nombre in nombre_de_playlists.items():
+        print(f"{indice}) {nombre}")
+
+    print("")
+    is_Int: bool = False
+    in_Range: bool = False
+
+    while not is_Int or not in_Range:
+        try:
+            playlist_a_modificar: int = input(
+                "Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ")  # Puedo crear funcion validar
+            playlist_a_modificar: int = int(playlist_a_modificar)
+            is_Int = True
+
+        except ValueError:
+            print('Valor no numerico!')
+            is_Int = False
+
+        if is_Int:
+            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_Range = True
+
+    nombre_playlist:str = nombre_de_playlists[playlist_a_modificar]
+    playlist_ID: str = id_de_playlists[playlist_a_modificar]
+
+    credentials = autenticar()  # Me fijo si tengo credenciales sin vencer y sino creo nuevas.
+    youtube = build('youtube', 'v3', credentials=credentials)
+    request = youtube.playlistItems().list(part="snippet", playlistId = playlist_ID,
+                                       maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+    response = request.execute()
+
+    titulo_y_artista:list = []
+
+    for i in range(0,len(response['items'])):
+        try:
+            artista = titulo = response['items'][i]['snippet']['title']
+
+        except KeyError:
+            titulo = " "
+
+        contador_letra = 0
+        ultima_letra = 0
+        for x in titulo: #saco lo que esta entre parentesis
+
+                if x == '(':
+                    ultima_letra = contador_letra
+
+                if ultima_letra != 0:
+                    titulo=titulo[0:ultima_letra]
+
+                contador_letra+=1
+
+        try:
+            artista = response['items'][i]['snippet']['videoOwnerChannelTitle']
+
+        except KeyError:
+            artista=""
+
+        titulo_y_artista.append([titulo,artista])
+
+
+    return [nombre_playlist,titulo_y_artista]
