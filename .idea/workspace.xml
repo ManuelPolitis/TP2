@@ -4,6 +4,8 @@
     <list default="true" id="a55f285f-663c-42fd-9fa9-6c5d653d8ddf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_spotify.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_spotify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_secrets.json" beforeDir="false" afterPath="$PROJECT_DIR$/client_secrets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modulo_lyrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulo_lyrics.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modulo_youtube.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulo_youtube.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/programa_principal.py" beforeDir="false" afterPath="$PROJECT_DIR$/programa_principal.py" afterDir="false" />
     </list>
@@ -106,8 +108,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.programa_principal" />
-        <item itemvalue="Python.api_spotify" />
         <item itemvalue="Python.modulo_youtube" />
+        <item itemvalue="Python.api_spotify" />
       </list>
     </recent_temporary>
   </component>
@@ -132,7 +134,7 @@
       <workItem from="1656598356040" duration="5514000" />
       <workItem from="1656604125511" duration="498000" />
       <workItem from="1656620202514" duration="461000" />
-      <workItem from="1656620844512" duration="336000" />
+      <workItem from="1656620844512" duration="2937000" />
     </task>
     <servers />
   </component>
@@ -152,7 +154,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TP2$api_spotify.coverage" NAME="api_spotify Coverage Results" MODIFIED="1656602774734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TP2$modulo_youtube.coverage" NAME="modulo_youtube Coverage Results" MODIFIED="1656538038755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TP2$programa_principal.coverage" NAME="programa_principal Coverage Results" MODIFIED="1656621132358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TP2$modulo_youtube.coverage" NAME="modulo_youtube Coverage Results" MODIFIED="1656621546489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TP2$programa_principal.coverage" NAME="programa_principal Coverage Results" MODIFIED="1656623756344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

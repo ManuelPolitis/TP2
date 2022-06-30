@@ -69,15 +69,15 @@ def exportar_csv(spotify) -> None:
             is_int = False
         
         if is_int:
-            if numero_de_playlist > contador or numero_de_playlist < 0:
+            if numero_de_playlist > contador or numero_de_playlist <= 0:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_range = True
-    
+
     id_playlist:str = lista_playlist[numero_de_playlist-1].id
     #Consigo el id de la playlist seleccionada para buscar los atributos
     nombre_playlist:str = lista_playlist[numero_de_playlist-1].name
-    print(f"Eligio la playlist : {nombre_playlist}, id: {id_playlist}")
+    print(f"\nEligio la playlist : {nombre_playlist}, id: {id_playlist}")
     link_playlist:str = (f"https://open.spotify.com/playlist/{id_playlist}")
 
     cantidad_canciones = (spotify.playlist_items(id_playlist, fields=None, market=None, as_tracks=False, limit=100, offset=0)).total
@@ -262,7 +262,7 @@ def buscar_nuevos_elementos(spotify) -> None:
             
             
             if is_int:
-                if numero_de_playlist > contador or numero_de_playlist < 0:
+                if numero_de_playlist > contador or numero_de_playlist <= 0:
                     print('El valor ingresado no está dentro del rango posible.')
                 else:
                     in_range = True
@@ -307,7 +307,7 @@ def obtener_titulo_y_artista_de_playlist(spotify) -> list:
             is_int = False
 
         if is_int:
-            if numero_de_playlist > contador or numero_de_playlist < 0:
+            if numero_de_playlist > contador or numero_de_playlist <= 0:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_range = True

@@ -69,6 +69,7 @@ def main():
             modulo_youtube.autenticar()
             print("")
             Spotify = autenticacion_spotify()
+            print('Usuario autenticado con exito!')
 
         if eleccion == 2:
             if plataforma == 'youtube':

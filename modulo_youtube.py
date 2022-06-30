@@ -77,7 +77,10 @@ def nombre_playlists()->list:
 
     print("Plataforma: Youtube")
     print(f"Usuario: {nombre_de_canal}")
-    print(f"Nombres de las playlist es: {nombre_de_playlists}")
+    print(f"Nombres de las playlists:")
+    for i in nombre_de_playlists:
+        print (f'- {i}')
+
 
     return nombre_de_playlists
 
@@ -181,7 +184,7 @@ def playlist_csv():
             is_Int = False
 
         if is_Int:
-            if numero_de_playlist > cant_de_playlists or numero_de_playlist < 0:
+            if numero_de_playlist > cant_de_playlists or numero_de_playlist <= 0:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_Range = True
@@ -291,72 +294,74 @@ def agregar_cancion():
                 in_Range = True
 
     print("")
-    confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-    while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "n":
-        confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
+    if indice_a_agregar !=0:
+        confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-    if confirmacion_agregar.lower() == "s":
-        request = youtube.playlists().list(part="snippet", mine=True,maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
-        response = request.execute()
+        while confirmacion_agregar.lower() != "s" and confirmacion_agregar.lower() != "n":
+            confirmacion_agregar:str = input("Valor ingresado invalido. ¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
 
-        cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
+        if confirmacion_agregar.lower() == "s":
+            request = youtube.playlists().list(part="snippet", mine=True,maxResults=50)  # Genero el request q con el part=snippet me dara toda la informacion que necesito. mine=true hara que busque en el canal de la persona que se autentico
+            response = request.execute()
 
-        nombre_de_playlists: dict = {}
-        id_de_playlists:dict = {}
+            cant_de_playlists: int = len(response["items"])  # Obtengo la cantidad de playlists tomando cuantos diccionarios hay dentro de items, que son las playlists
 
-        for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
-            nombre_de_playlists[i+1]=response["items"][i]["snippet"]["title"]
-            id_de_playlists[i+1] = response["items"][i]["id"]
+            nombre_de_playlists: dict = {}
+            id_de_playlists:dict = {}
 
-        cls()
+            for i in range(0,cant_de_playlists):  # Recorro todas las playlists obtenidas como diccionarios para sacar solamente los titulos de las mismas
+                nombre_de_playlists[i+1]=response["items"][i]["snippet"]["title"]
+                id_de_playlists[i+1] = response["items"][i]["id"]
 
-        print("Tus Playlists:\n")
-        for indice,nombre in nombre_de_playlists.items():
-            print(f"{indice}) {nombre}")
+            cls()
 
-        print("")
-        is_Int: bool = False
-        in_Range: bool = False
+            print("Tus Playlists:\n")
+            for indice,nombre in nombre_de_playlists.items():
+                print(f"{indice}) {nombre}")
 
-        while not is_Int or not in_Range:
-            try:
-                playlist_a_modificar: int = input("Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ") # Puedo crear funcion validar
-                playlist_a_modificar: int = int(playlist_a_modificar)
-                is_Int = True
+            print("")
+            is_Int: bool = False
+            in_Range: bool = False
 
-            except ValueError:
-                print('Valor no numerico!')
-                is_Int = False
+            while not is_Int or not in_Range:
+                try:
+                    playlist_a_modificar: int = input("Elija de la lista de playlists, en cual quiere agregar su cancion (1/2/3/4/...): ") # Puedo crear funcion validar
+                    playlist_a_modificar: int = int(playlist_a_modificar)
+                    is_Int = True
 
-            if is_Int:
-                if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
-                    print('El valor ingresado no esta dentro del rango posible.')
-                else:
-                    in_Range = True
+                except ValueError:
+                    print('Valor no numerico!')
+                    is_Int = False
 
-        video_ID:str = diccionario_resultados[indice_a_agregar]
-        playlist_ID:str = id_de_playlists[playlist_a_modificar]
+                if is_Int:
+                    if playlist_a_modificar > cant_de_playlists or playlist_a_modificar <= 0:
+                        print('El valor ingresado no esta dentro del rango posible.')
+                    else:
+                        in_Range = True
 
-        request = youtube.playlistItems().insert(
-            part="snippet",
-            body={
-                "snippet": {
-                    "playlistId": playlist_ID,
-                    "resourceId": {
-                        "kind": "youtube#video",
-                        "videoId": video_ID
+            video_ID:str = diccionario_resultados[indice_a_agregar]
+            playlist_ID:str = id_de_playlists[playlist_a_modificar]
+
+            request = youtube.playlistItems().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_ID,
+                        "resourceId": {
+                            "kind": "youtube#video",
+                            "videoId": video_ID
+                        }
                     }
                 }
-            }
-        )
+            )
+            cls()
+            print("Video agregado con exito!")
+            response = request.execute()
+
         cls()
-        print("Video agregado con exito!")
-        response = request.execute()
 
-    cls()
-
-    print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar,"youtube"))
+        print(modulo_lyrics.letra_cancion(nombre_cancion_a_buscar,artista_cancion_a_buscar,"youtube"))
 
 def funcion_letras()->list:
 
@@ -397,7 +402,7 @@ def funcion_letras()->list:
             is_Int = False
 
         if is_Int:
-            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
+            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar <= 0:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_Range = True
@@ -577,7 +582,7 @@ def conseguir_nombre_playlist_y_sus_canciones():
             is_Int = False
 
         if is_Int:
-            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar < 0:
+            if playlist_a_modificar > cant_de_playlists or playlist_a_modificar <= 0:
                 print('El valor ingresado no esta dentro del rango posible.')
             else:
                 in_Range = True

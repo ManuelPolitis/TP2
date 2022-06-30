@@ -33,7 +33,11 @@ def letra_cancion(titulo,artista,plataforma) -> str:
             confirmacion: str = input("¿Es esta la letra de la cancion que buscabas? (S/N): ")
 
         if confirmacion.lower() == 's':
-            return cancion.lyrics
+            try:
+                return cancion.lyrics
+
+            except AttributeError:
+                return ""
 
         if confirmacion.lower() == "n":
             cls()
