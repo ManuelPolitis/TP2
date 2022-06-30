@@ -88,6 +88,8 @@ def punto7(letras):
 
     # Creacion nube de palabras con todas las letras juntas
 
+    print("Creando nube de palabras...")
+
     resp = requests.post('https://quickchart.io/wordcloud', json={
         'format': 'png',
         'width': 1000,
@@ -99,3 +101,5 @@ def punto7(letras):
 
     with open('newscloud.png', 'wb') as f:
         f.write(resp.content)
+
+    print("Nube de palabras creada con exito!")

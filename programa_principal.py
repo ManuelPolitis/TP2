@@ -162,13 +162,17 @@ Menu Principal TP2
 
             if plataforma == 'spotify':
                 try:
-                    letras = api_spotify.funcion_letras(Spotify)
+                    try:
+                        letras = api_spotify.funcion_letras(Spotify)
 
-                except UnboundLocalError:
-                    Spotify = autenticacion_spotify()
-                    letras = api_spotify.funcion_letras(Spotify)
-                cls()
-                punto_7.punto7(letras)
+                    except UnboundLocalError:
+                        Spotify = autenticacion_spotify()
+                        letras = api_spotify.funcion_letras(Spotify)
+                    cls()
+                    punto_7.punto7(letras)
+
+                except IndexError:
+                    print("Ingrese una playlist con menos de 100 canciones.")
 
 
         if eleccion == 8:
