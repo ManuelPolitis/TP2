@@ -36,7 +36,7 @@ Cualquier otra cadena, será tomada como título y la descripción será
 "Lista clonada desde Youtube"
 
 Parametros: Spotify (Class)
-	         nombre_con_input (str): Nombre de la playlist.
+	    nombre_con_input (str): Nombre de la playlist.
 	         
 Devuelve: None
 
@@ -76,6 +76,6 @@ Recibe una lista que contiene los datos de una playlist de Youtube y migra las c
 a la plataforma de Spotify. Las canciones que no encuentre las guarda en un archivo csv
 
 Parametros: Spotify (Class)
-                     datos_playlist (list)
+            datos_playlist (list)
 
 Devuelve: None
