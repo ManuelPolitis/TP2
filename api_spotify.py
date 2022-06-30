@@ -197,8 +197,6 @@ def crear_playlist(spotify,nombre_con_input) -> None:
 
     spotify.playlist_create(user_id, nombre, True, descripcion)
 
-    print(spotify.playlist.id)
-
 def buscar_nuevos_elementos(spotify) -> None:
     """
     Busca la canción que ingresa el usuario y muestra los 3 resultados más populares. Luego,
@@ -398,7 +396,7 @@ def obtener_titulo_y_artista_de_playlist(spotify) -> list:
 
 def funcion_letras(spotify):
 
-    titulo_y_artista:list = obtener_titulo_y_artista_de_playlist(spotify)
+    titulo_y_artista:list = obtener_titulo_y_artista_de_playlist(spotify)[0]
 
     letras:list = []
 
