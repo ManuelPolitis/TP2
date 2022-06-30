@@ -248,48 +248,47 @@ def agregar_cancion():
 
     indice_a_agregar: int = 0
 
-    while indice_a_agregar == 0:
 
-        cls()
-        nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
-        artista_cancion_a_buscar: str = input("Ingrese el artista de la cancion: ")
+    cls()
+    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la cancion: ')
+    artista_cancion_a_buscar: str = input("Ingrese el artista de la cancion: ")
 
-        cancion_a_buscar:str = nombre_cancion_a_buscar + " " + artista_cancion_a_buscar
-        cls()
+    cancion_a_buscar:str = nombre_cancion_a_buscar + " " + artista_cancion_a_buscar
+    cls()
 
-        request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
-        response = request.execute()
+    request = youtube.search().list(part='snippet',maxResults=3,type='video',q=cancion_a_buscar) #Valor predeterminado de order es SEARCH_SORT_RELEVANCE.
+    response = request.execute()
 
-        diccionario_resultados:dict = {}
+    diccionario_resultados:dict = {}
 
-        print("Resultados:")
+    print("Resultados:")
 
-        for i in range(0, len(response['items'])):
-            print('----------------------------------------------------------------------------------------------------------')
-            print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
-            print(response['items'][i]['snippet']['description'])
-            diccionario_resultados[i+1] = response["items"][i]["id"]["videoId"]
+    for i in range(0, len(response['items'])):
+        print('----------------------------------------------------------------------------------------------------------')
+        print(f'{i+1}) {response["items"][i]["snippet"]["title"]}')
+        print(response['items'][i]['snippet']['description'])
+        diccionario_resultados[i+1] = response["items"][i]["id"]["videoId"]
 
-        print('----------------------------------------------------------------------------------------------------------\n')
+    print('----------------------------------------------------------------------------------------------------------\n')
 
-        is_Int: bool = False
-        in_Range: bool = False
+    is_Int: bool = False
+    in_Range: bool = False
 
-        while not is_Int or not in_Range:
-            try:
-                indice_a_agregar: int = int(input('Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
-                is_Int = True
+    while not is_Int or not in_Range:
+        try:
+            indice_a_agregar: int = int(input('Ingrese de las opciones (1/2/3) cual desea agregar a su playlist. Si su opcion no esta dentro de sus opciones ingrese (0): '))
+            is_Int = True
 
-            except ValueError:
-                print('Valor no numerico!')
-                is_Int = False
+        except ValueError:
+            print('Valor no numerico!')
+            is_Int = False
 
-            if is_Int:
+        if is_Int:
 
-                if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
-                    print('El valor ingresado no esta dentro del rango posible.')
-                else:
-                    in_Range = True
+            if indice_a_agregar > len(response['items']) or indice_a_agregar < 0:
+                print('El valor ingresado no esta dentro del rango posible.')
+            else:
+                in_Range = True
 
     print("")
     confirmacion_agregar:str = input("¿Desea agregar esta cancion a una de sus playlists? (S/N): ")
