@@ -205,7 +205,7 @@ def buscar_nuevos_elementos(spotify) -> None:
     Precondición: Recibe una instancia de la clase Spotify creada a partir del token.
 
     """
-    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la canción y el artista: ')
+    nombre_cancion_a_buscar: str = input('Ingrese el nombre de la canción: ')
     mal_ingreso_cancion:bool = True
     while mal_ingreso_cancion:
         try:
