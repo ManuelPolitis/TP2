@@ -281,6 +281,15 @@ def buscar_nuevos_elementos(spotify) -> None:
 
 
 def obtener_titulo_y_artista_de_playlist(spotify) -> list:
+    """
+    Da a elegir al usuario una playlist y devuelve una lista de listas que contiene
+    el nombre de las canciones, el artista y nombre de la playlist.
+    Por ejemplo:
+    [[[titulo1, artista1], [titulo2, artista2], [titulo3, artista3]], nombre_playlist]
+
+    Precondicion: Recibe una instancia de la clase Spotify creada a partir del token
+    Postcondicion: Devuelve una lista con los datos de la playlist elegida
+    """
     contador: int = int()
     user_id: str = spotify.current_user().id
     lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
@@ -376,7 +385,12 @@ def obtener_titulo_y_artista_de_playlist(spotify) -> list:
 
 
 def funcion_letras(spotify):
+    """
+    Busca las letras de las canciones de una playlist determinada y las devuelve
 
+    Precondicion: Recibe una instancia de la clase Spotify creada a partir del token
+    Postcondicion: Devuelve una lista con las letras de la cancion
+    """
     titulo_y_artista:list = obtener_titulo_y_artista_de_playlist(spotify)[0]
 
     letras:list = []
@@ -387,8 +401,15 @@ def funcion_letras(spotify):
 
     return letras
 
-def buscar_playlist_creada_y_agregar_canciones(spotify,datos_playlist:list):
-
+def buscar_playlist_creada_y_agregar_canciones(spotify,datos_playlist:list) -> None:
+    """
+    Recibe una lista que contiene los datos de una playlist de Youtube y migra las canciones
+    a la plataforma de Spotify. Las canciones que no encuentre las guarda en un archivo csv
+    
+    Precondicion: Recibe una instancia de la clase Spotify creada a partir del token
+    y una lista que contiene el nombre y artista de las canciones de una playlist
+    de la forma [[nombre_playlist], [[cancion1, artista1], [cancion2, artista2]...]]]
+    """
     user_id: str = spotify.current_user().id
     lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
     id_playlist = 0

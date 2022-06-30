@@ -1,0 +1,81 @@
+DOCUMENTACION MODULO SPOTIFY_API
+
+>>> pedir_token()
+
+Hace un request a la api a traves de Tekore para obtener las credenciales.
+
+Parametros: Ninguno
+
+Devuelve: token (RefreshingToken)
+
+
+>>> mostrar_playlist(spotify)
+
+Muestra las primeras 50 playlists que tenga el usuario.
+
+Parametros: Spotify (Class)
+
+Devuelve: None
+
+
+>>> exportar_csv(spotify)
+
+Solicita al usuario que elija una playlist y crea un archivo csv con los 10 atributos principales
+
+Parametros: Spotify (Class)
+
+Devuelve: None
+
+
+>>> crear_playlist(spotify, nombre_con_input)
+
+Crea una playlist vacía a partir de los datos que ingresa el usuario.
+Si se ingresa la cadena "nombre_con_input",
+le pide al usuario que cree el nombre de la playlist.
+Cualquier otra cadena, será tomada como título y la descripción será
+"Lista clonada desde Youtube"
+
+Parametros: Spotify (Class)
+	         nombre_con_input (str): Nombre de la playlist.
+	         
+Devuelve: None
+
+
+>>> buscar_nuevos_elementos(spotify)
+
+Busca la canción que ingresa el usuario y muestra los 3 resultados más populares.
+Permite agregar la cancion a una playlist y muestra la letra
+
+Parametros: Spotify (Class)
+
+Devuelve: None
+
+
+>>> obtener_titulo_y_artista_de_playlist(spotify)
+
+Da a elegir al usuario una playlist y devuelve una lista de listas que contiene
+el nombre de las canciones, el artista y nombre de la playlist.
+Por ejemplo:
+[ [ [titulo1, artista1], [titulo2, artista2], [titulo3, artista3] ], nombre_playlist ]
+
+Parametros: Spotify (Class)
+
+Devuelve: list
+
+>>> funcion_letras(spotify)
+
+Busca las letras de las canciones de una playlist determinada y las devuelve
+
+Parametros: Spotify (Class)
+
+Devuelve: list
+
+>> buscar_playlist_creada_y_agregar_canciones(spotify,datos_playlist:list)
+
+Recibe una lista que contiene los datos de una playlist de Youtube y migra las canciones
+a la plataforma de Spotify. Las canciones que no encuentre las guarda en un archivo csv
+
+Parametros: Spotify (Class)
+                     datos_playlist (list)
+
+Devuelve: None
