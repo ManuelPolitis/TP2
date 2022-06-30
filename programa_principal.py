@@ -13,8 +13,7 @@ def main():
     continuar:bool = True
 
     while continuar:
-        print("""
-Menu Principal TP2
+        print("""Menu Principal TP2
 
 1- Autenticarse en Youtube y Spotify
 2- Ver tus playlist en una de las plataformas
@@ -62,6 +61,7 @@ Menu Principal TP2
         def autenticacion_spotify():
             print("Autenticacion Spotify: \n")
             Spotify = tk.Spotify(api_spotify.pedir_token())
+            cls()
             return Spotify
 
         if eleccion == 1:

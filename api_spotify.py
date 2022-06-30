@@ -166,8 +166,8 @@ def crear_playlist(spotify,nombre_con_input) -> None:
     """
     if nombre_con_input == "nombre_con_input":
         user_id: str = spotify.current_user().id
-        nombre: str = input('Ingrese el nombre de la playlist: ')
-        descripcion: str = input('Escriba una descripción: ')
+        nombre: str = input('Ingrese el nombre de la nueva playlist: ')
+        descripcion: str = input('Escriba su descripción: ')
 
     else:
         user_id: str = spotify.current_user().id
@@ -176,6 +176,7 @@ def crear_playlist(spotify,nombre_con_input) -> None:
 
 
     spotify.playlist_create(user_id, nombre, True, descripcion)
+    print('\nPlaylist creada con exito!')
 
 def buscar_nuevos_elementos(spotify) -> None:
     """

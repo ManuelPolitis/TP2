@@ -126,11 +126,11 @@ def crear_playlists(nombreplaylist):
 
     cls()
 
-    print('Playlist creada con exito!')
+    print('Playlist creada con exito!\n')
     print(f'Nombre de la playlist: {nombre_playlist}\n'
           f'Descripcion de la playlist: {descripcion_playlist}\n'
-          f'{public_o_private} playlist\n'
-          f'Link nueva playlist: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
+          f'Tipo de playlist: {public_o_private}\n'
+          f'Link: https://www.youtube.com/playlist?list={playlists_insert_response["id"]}')
 
     return playlists_insert_response["id"]
 
