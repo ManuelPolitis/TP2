@@ -127,15 +127,11 @@ Menu Principal TP2
                 datos_playlist:list = modulo_youtube.conseguir_nombre_playlist_y_sus_canciones()
                 try:
                     api_spotify.crear_playlist(Spotify,datos_playlist[0])
-
+                    api_spotify.buscar_playlist_creada_y_agregar_canciones(Spotify,datos_playlist)
                 except UnboundLocalError:
                     Spotify = autenticacion_spotify()
                     api_spotify.crear_playlist(Spotify,datos_playlist[0])
-
-
-
-
-
+                    api_spotify.buscar_playlist_creada_y_agregar_canciones(Spotify,datos_playlist)
 
 
             elif plataforma == "spotify":
@@ -152,7 +148,6 @@ Menu Principal TP2
                 id_playlist_nueva_youtube:str = modulo_youtube.crear_playlists(titulo_playlist)
 
                 modulo_youtube.agregar_grupo_de_canciones_a_playlist(lista_titulos_y_artistas,id_playlist_nueva_youtube)
-
 
 
         if eleccion == 7:

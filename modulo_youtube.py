@@ -595,7 +595,11 @@ def conseguir_nombre_playlist_y_sus_canciones():
     titulo_y_artista:list = []
 
     for i in range(0,len(response['items'])):
-        titulo = response['items'][i]['snippet']['title']
+        try:
+            artista = titulo = response['items'][i]['snippet']['title']
+
+        except KeyError:
+            titulo = " "
 
         contador_letra = 0
         ultima_letra = 0
@@ -609,8 +613,12 @@ def conseguir_nombre_playlist_y_sus_canciones():
 
                 contador_letra+=1
 
+        try:
+            artista = response['items'][i]['snippet']['videoOwnerChannelTitle']
 
-        artista = response['items'][i]['snippet']['videoOwnerChannelTitle']
+        except KeyError:
+            artista=""
+
         titulo_y_artista.append([titulo,artista])
 
 

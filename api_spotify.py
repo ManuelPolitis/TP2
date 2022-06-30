@@ -406,4 +406,87 @@ def funcion_letras(spotify):
 
     return letras
 
+def buscar_playlist_creada_y_agregar_canciones(spotify,datos_playlist:list):
+
+    user_id: str = spotify.current_user().id
+    lista_playlist = spotify.playlists(user_id, limit=50, offset=0).items
+    id_playlist = 0
+    for track in lista_playlist:
+        if track.name == datos_playlist[0]:
+            id_playlist = track.id
+
+    canciones_no_posibles_de_migrar:list = []
+    for cancion_y_artista in datos_playlist[1]:
+
+        nombre_cancion_a_buscar = cancion_y_artista[0]
+
+        print(f"Cancion: {nombre_cancion_a_buscar}")
+        print("Ingrese cual de estos titulos coincide con el de la cancion original:")
+
+        mal_ingreso_cancion: bool = True
+        while mal_ingreso_cancion:
+            try:
+                buscar: tuple = spotify.search(query=nombre_cancion_a_buscar, limit=3)
+                lista_cancion: list = buscar[0].items
+                for i in range(3):
+                    atributos_artista: list = lista_cancion[i].artists
+                    print(f"{i + 1}) {lista_cancion[i].name} , {atributos_artista[0].name} ")
+                mal_ingreso_cancion: bool = False
+            except Exception:
+                print("")
+                print("No se encontraron 3 coincidencias con el titulo de la busqueda automatica\n")
+                print("Si cree que esta cancion no esta en spotify solo ingrese cualquier cancion y luego presione 0 al pedirle la cancion a agregar")
+                nombre_cancion_a_buscar: str = input('Ingrese el nombre de la canción para mejorar la calidad de la busqueda: ')
+                mal_ingreso_cancion: bool = True
+
+        cancion_elegida_str: str = input("Ingrese el número de la canción que desea agregar (1/2/3). Si ninguna coincide, ingrese 0: ")
+        # Validación de que sea un número
+        cancion_elegida_es_int: bool = cancion_elegida_str.isdigit()
+        while not cancion_elegida_es_int:
+            print("Ingrese valores enteros")
+            cancion_elegida_str = input("Ingrese el número de la canción que desea agregar (1/2/3). Si ninguna coincide, ingrese 0: ")
+            cancion_elegida_es_int = cancion_elegida_str.isdigit()
+        if cancion_elegida_es_int:
+            cancion_elegida: int = int(cancion_elegida_str)
+
+        while cancion_elegida > 3 or cancion_elegida < 0:
+            print("Ingrese valores entre 1 y 3")
+            cancion_elegida_str: str = input("Ingrese el número de la canción que desea agregar (1/2/3). Si ninguna coincide, ingrese 0: ")
+            # Validación de que sea un número
+            cancion_elegida_es_int: bool = cancion_elegida_str.isdigit()
+            while not cancion_elegida_es_int:
+                print("Ingrese valores enteros")
+                cancion_elegida_str = input("Ingrese el número de la canción que desea agregar (1/2/3). Si ninguna coincide, ingrese 0: ")
+                cancion_elegida_es_int = cancion_elegida_str.isdigit()
+            if cancion_elegida_es_int:
+                cancion_elegida: int = int(cancion_elegida_str)
+
+
+        if cancion_elegida == 0:
+            canciones_no_posibles_de_migrar.append(cancion_y_artista[0])
+
+
+        elif cancion_elegida == 1 or cancion_elegida == 2 or cancion_elegida == 3:
+            uri_cancion = lista_cancion[cancion_elegida - 1].uri
+            agregar_cancion = spotify.playlist_add(playlist_id=id_playlist,
+                                                   uris=[uri_cancion])
+            valid_playlist = True
+
+            print("¡Canción agregada con éxito!")
+
+        print("")
+
+    if len(canciones_no_posibles_de_migrar)>0:
+        with open(f'canciones_no_posibles_de_migrar.csv', 'w', newline='', encoding='UTF-8') as archivocanciones_csv:
+            csv_writer = csv.writer(archivocanciones_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+            csv_writer.writerow(["Canciones no migradas"])
+
+            print('Creando archivo CSV...')
+
+            for i in canciones_no_posibles_de_migrar:
+                try:
+                    csv_writer.writerow([i])
+
+                except KeyError:
+                    print('')
 
