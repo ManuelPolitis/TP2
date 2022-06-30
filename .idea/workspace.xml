@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a55f285f-663c-42fd-9fa9-6c5d653d8ddf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_spotify.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_spotify.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modulo_youtube.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulo_youtube.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/programa_principal.py" beforeDir="false" afterPath="$PROJECT_DIR$/programa_principal.py" afterDir="false" />
-    </list>
+    <list default="true" id="a55f285f-663c-42fd-9fa9-6c5d653d8ddf" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,7 +124,7 @@
       <workItem from="1656524120253" duration="4061000" />
       <workItem from="1656533614123" duration="2939000" />
       <workItem from="1656536751023" duration="2582000" />
-      <workItem from="1656598356040" duration="5386000" />
+      <workItem from="1656598356040" duration="5514000" />
     </task>
     <servers />
   </component>
